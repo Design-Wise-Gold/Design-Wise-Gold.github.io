@@ -1,7 +1,43 @@
 ---
 import "../styles/global.css";
+import logotipo from "../assets/logotipo__wisegGold.svg";
+import Item__menu from "./item__menu.astro";
 ---
 
-<h1 class="text-3xl font-bold">
-  WiseGold
-</h1>
+<header class="black-900">
+  <nav class="flex justify-between px-4 py-4 w-full border-solid border-gray-500">
+    <img src={logotipo.src} alt="logotipo wisegold" />
+
+    <ul class="hidden lg:flex gap-4 ">
+      <Item__menu title="Ecosystem" />
+      <Item__menu title="Custody & Segregation" />
+      <Item__menu title="Risk & Governance" />
+      <Item__menu title="Global Network" />
+      <Item__menu title="For Intermediaries" />
+    </ul>
+    <button class="hidden lg:block">
+      <a href="#" class="text-white-700">Access Portal</a>
+    </button>
+
+    <button class="bg-white-700 text-black-900 lg:hidden">
+      <div>
+        <span class="w-6 h-2 bg-gray-500"></span>
+        <span class="w-6 h-2 bg-gray-500"></span>
+        <span class="w-6 h-2 bg-gray-500"></span>
+      </div>
+    </button>
+  </nav>
+</header>
+<section class="flex justify-center items-center">
+  <div>
+    <h1 class="text-3xl font-bold text-white-700 uppercase font-bebas-neue">
+      An Integrated Bullion Infrastructure for Professional Intermediaries
+    </h1>
+    <p class="text-gray-500">
+      A unified ecosystem encompassing advisory, independent vault coordination,
+      technology, and proprietary trading. Engineered exclusively for capital
+      preservation and institutional continuity
+    </p>
+  </div>
+  <div></div>
+</section>
