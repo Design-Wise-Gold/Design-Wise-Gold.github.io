@@ -2,22 +2,50 @@
 import "../styles/global.css";
 import logotipo from "../assets/logotipo__wisegGold.svg";
 import Item__menu from "./item__menu.astro";
+import video from "../assets/world.mp4";
 ---
+<main class="relative mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
+<header class="">
+  <nav
+    class="flex fixed left-0 right-0 justify-between items-center h-auto w-full border-solid border-gray-500 border-b-[0.2px] bg-black-900 z-50"
+  >
+    <a href="#"
+      ><img
+        class="w-[143px] px-6 py-4  h-full"
+        src={logotipo.src}
+        alt="logotipo wisegold"
+      /></a
+    >
 
-<header class="black-900">
-  <nav class="flex justify-between px-4 py-4 w-full border-solid border-gray-500">
-    <img src={logotipo.src} alt="logotipo wisegold" />
-
-    <ul class="hidden lg:flex gap-4 ">
+    <ul class="hidden lg:flex gap-6">
       <Item__menu title="Ecosystem" />
       <Item__menu title="Custody & Segregation" />
       <Item__menu title="Risk & Governance" />
       <Item__menu title="Global Network" />
       <Item__menu title="For Intermediaries" />
     </ul>
-    <button class="hidden lg:block">
-      <a href="#" class="text-white-700">Access Portal</a>
-    </button>
+    <a
+      href="#"
+      class="hidden lg:flex items-center gap-2 px-4  h-[46px]   py-2 hover:bg-gray-900 hover:text-accent w-auto"
+    >
+      <span class="text-white-700 text-sm">Access Portal</span>
+      <svg
+        class="w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-arrow-big-right-dash-icon lucide-arrow-big-right-dash"
+        ><path
+          d="M11 9a1 1 0 0 0 1-1V5.061a1 1 0 0 1 1.811-.75l6.836 6.836a1.207 1.207 0 0 1 0 1.707l-6.836 6.835a1 1 0 0 1-1.811-.75V16a1 1 0 0 0-1-1H9a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z"
+        ></path><path d="M4 9v6"></path></svg
+      >
+    </a>
 
     <button class="bg-white-700 text-black-900 lg:hidden">
       <div>
@@ -28,16 +56,237 @@ import Item__menu from "./item__menu.astro";
     </button>
   </nav>
 </header>
-<section class="flex justify-center items-center">
-  <div>
-    <h1 class="text-3xl font-bold text-white-700 uppercase font-bebas-neue">
-      An Integrated Bullion Infrastructure for Professional Intermediaries
+
+<section class=" flex flex-col lg:flex-row justify-center items-center min-h-dvh  px-4 md:px-8  gap-8 lg:gap-32 pt-20 lg:pt-0 pb-8 lg:pb-0 relative overflow-hidden">
+  <!-- Gold bullion Matrix canvas -->
+  <canvas id="gold-matrix" class=" absolute inset-0 w-full h-full pointer-events-none z-0" style="opacity:0.28"></canvas>
+  <!-- Text content block -->
+  <div class=" flex flex-col w-full lg:h-full  justify-center border-r-0">
+    <span class="text-gray-400 text-sm flex gap-2 items-center"
+      ><div class="w-2 h-2 bg-accent rounded-4xl"></div>INSTITUTIONAL BULLION
+      INFRASTRUCTURE</span
+    >
+    <h1
+      class="text-4xl md:text-5xl font-bold text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 font-medium mt-2"
+    >
+      An Integrated Bullion Infrastructure <br />for <span class="text-accent"
+        >Professional Intermediaries</span
+      >
     </h1>
-    <p class="text-gray-500">
+    <p class="text-gray-500 mt-3 text-sm md:text-base">
       A unified ecosystem encompassing advisory, independent vault coordination,
       technology, and proprietary trading. Engineered exclusively for capital
       preservation and institutional continuity
     </p>
+    <a
+      href="#"
+      class="flex items-center gap-2 border-solid border-gray-500 border-[0.2px] h-[46px] px-4 hover:bg-gray-900 hover:text-accent w-fit mt-4"
+    >
+      <span class="text-white-700 text-sm">Built exclusively for professional intermediaries</span>
+      <svg
+        class="w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ><path
+          d="M11 9a1 1 0 0 0 1-1V5.061a1 1 0 0 1 1.811-.75l6.836 6.836a1.207 1.207 0 0 1 0 1.707l-6.836 6.835a1 1 0 0 1-1.811-.75V16a1 1 0 0 0-1-1H9a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z"
+        ></path><path d="M4 9v6"></path></svg
+      >
+    </a>
   </div>
-  <div></div>
+
+  <!-- Right article: video + cards -->
+  <article class="relative z-10 w-full lg:w-1/2 h-auto gap-4 flex flex-col">
+    <span class="text-white-700 text-sm flex gap-2 items-center"
+      ><div class="w-2 h-2 bg-accent rounded-4xl"></div>Global Reach</span
+    >
+    <video
+      src={video}
+      autoplay
+      muted
+      loop
+      playsinline
+      class="w-full h-full object-cover border-1 border-gray-500 rounded-4xl"
+    ></video>
+    <div class="flex border-1 border-gray-500 rounded-2xl p-4">
+      <p class="flex flex-col text-white-700 text-sm gap-3">
+        Operational Backbone<span class="text-gray-400 text-sm"
+          >Integrated consulting, logistics, and technology for bullion
+          operations</span>
+      </p>
+      <video
+        src={video}
+        autoplay
+        muted
+        loop
+        playsinline
+        class="w-20 h-20 object-cover rounded-lg"
+      ></video>
+    </div>
+    <div class="flex border-1 border-gray-500 rounded-2xl p-4">
+      <p class="flex flex-col text-white-700 text-sm gap-3">
+        Segregated Custody &amp; Compliance<span class="text-gray-400 text-sm"
+          >Account-level segregation, independent vaults, and AML/CTF
+          controls</span>
+      </p>
+      <video
+        src={video}
+        autoplay
+        muted
+        loop
+        playsinline
+        class="w-20 h-20 object-cover rounded-lg"
+      ></video>
+    </div>
+  </article>
 </section>
+</main>
+
+<script>
+(function () {
+  const canvas = document.getElementById("gold-matrix") as HTMLCanvasElement | null;
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  // Gold bullion character set
+  const CHARS = "Au XAU 99.99 kg ■ □ ▪ ◆ ◇ GOLD BAR".replace(/ /g, "").split("");
+
+  interface Particle {
+    x: number; y: number;
+    vx: number; vy: number;
+    char: string;
+    alpha: number;
+    size: number;
+    life: number; maxLife: number;
+    color: string;
+  }
+
+  const COLORS = [
+    "212,175,55", "255,215,0", "180,140,30", "230,190,80", "255,200,50",
+  ];
+
+  let mouse = { x: -9999, y: -9999 };
+  let particles: Particle[] = [];
+  let rafId: number;
+  const MAX_PARTICLES = 60;
+  const SPAWN_RADIUS = 180;
+
+  function resize() {
+    canvas!.width = canvas!.offsetWidth;
+    canvas!.height = canvas!.offsetHeight;
+  }
+
+  function spawnParticle() {
+    if (particles.length >= MAX_PARTICLES) return;
+    if (mouse.x < 0) return;
+
+    // Spawn randomly within a radius around the mouse
+    const angle = Math.random() * Math.PI * 2;
+    const r = Math.random() * SPAWN_RADIUS * 0.6;
+    const x = mouse.x + Math.cos(angle) * r;
+    const y = mouse.y + Math.sin(angle) * r;
+
+    const maxLife = 80 + Math.random() * 80;
+    particles.push({
+      x, y,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: -(0.2 + Math.random() * 0.5), // drift upward
+      char: CHARS[Math.floor(Math.random() * CHARS.length)],
+      alpha: 0,
+      size: 10 + Math.floor(Math.random() * 5),
+      life: 0,
+      maxLife,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    });
+  }
+
+  function draw() {
+    // Full clear every frame — no trails, no columns
+    ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+
+    // Spawn ~2 particles per frame near mouse
+    spawnParticle();
+    if (Math.random() > 0.4) spawnParticle();
+
+    ctx!.textAlign = "center";
+
+    particles = particles.filter((p) => {
+      p.life++;
+      p.x += p.vx;
+      p.y += p.vy;
+
+      // Fade in first 25% of life, fade out last 30%
+      const progress = p.life / p.maxLife;
+      if (progress < 0.40) {
+        p.alpha = (progress / 0.25) * 0.55;
+      } else if (progress > 0.7) {
+        p.alpha = ((1 - progress) / 0.3) * 0.55;
+      } else {
+        p.alpha = 0.55;
+      }
+
+      // Check mouse proximity for extra glow
+      const dx = p.x - mouse.x;
+      const dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const proximity = Math.max(0, 1 - dist / SPAWN_RADIUS);
+
+      const alpha = p.alpha * (0.3 + proximity * 0.7);
+
+      ctx!.font = `${p.size}px 'Courier New', monospace`;
+
+      if (proximity > 0.25) {
+        ctx!.shadowColor = `rgba(255,215,0,${proximity * 0.8})`;
+        ctx!.shadowBlur = 10 * proximity;
+      } else {
+        ctx!.shadowBlur = 0;
+      }
+
+      ctx!.fillStyle = `rgba(${p.color},${alpha})`;
+      ctx!.fillText(p.char, p.x, p.y);
+      ctx!.shadowBlur = 0;
+
+      return p.life < p.maxLife;
+    });
+
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function onMouseMove(e: MouseEvent) {
+    const rect = canvas!.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  }
+
+  function onMouseLeave() {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  }
+
+  const section = canvas!.closest("section");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) { resize(); draw(); }
+      else cancelAnimationFrame(rafId);
+    });
+  }, { threshold: 0.1 });
+
+  if (section) observer.observe(section);
+
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(rafId);
+    resize();
+    draw();
+  });
+
+  section?.addEventListener("mousemove", onMouseMove as EventListener);
+  section?.addEventListener("mouseleave", onMouseLeave);
+})();
+</script>
