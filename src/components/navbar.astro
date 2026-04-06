@@ -1,0 +1,138 @@
+---
+import logotipo from "../assets/Logos/logotipo__wisegGold.svg";
+import Item__menu from "./item__menu.astro";
+---
+
+<nav
+    id="navbar"
+    class="flex fixed left-0 right-0 justify-between items-center h-auto w-full border-solid border-gray-500 border-b-[0.2px] bg-black-900 z-50 top-0"
+>
+    <a href="#">
+        <img
+            class="w-[144px] px-6 py-4 h-full border-r-0 lg:border-r-[0.2px] border-gray-500 hover:text-accent"
+            src={logotipo.src}
+            alt="logotipo wisegold"
+        />
+    </a>
+
+    <ul id="menu-desktop" class="hidden lg:flex gap-6">
+        <Item__menu title="Ecosystem" link="#ecosystem" />
+        <Item__menu title="Custody & Segregation" link="#custody" />
+        <Item__menu title="Risk & Governance" link="#risk" />
+        <Item__menu title="Global Network" link="#global" />
+        <Item__menu title="For Intermediaries" link="#intermediaries" />
+    </ul>
+
+    <button
+        id="portal-toggle"
+        class="group text-gray-300 hidden lg:flex items-center gap-2 px-4 h-[46px] py-2 hover:bg-gray-900 hover:text-accent w-fit border-gray-500 border-l-[0.2px] hover:border-accent hover:border-[0.2px] min-w-[144px] transition-colors duration-200"
+    >
+        <span class="text-sm">Access Portal</span>
+        <svg
+            class="w-5"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <path d="M11 9a1 1 0 0 0 1-1V5.061a1 1 0 0 1 1.811-.75l6.836 6.836a1.207 1.207 0 0 1 0 1.707l-6.836 6.835a1 1 0 0 1-1.811-.75V16a1 1 0 0 0-1-1H9a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z"></path>
+            <path d="M4 9v6"></path>
+        </svg>
+    </button>
+
+    <!-- Burger button — mobile only -->
+    <button
+        id="menu-toggle"
+        aria-label="Toggle menu"
+        aria-expanded="false"
+        class="flex w-auto pl-4 pr-6 h-auto justify-center items-center lg:hidden"
+    >
+        <div class="relative w-7 h-4">
+            <span id="burger-line-1" class="absolute top-1/2 left-0 -translate-y-1/2 w-7 h-[3px] bg-gray-300 rounded-full"></span>
+            <span id="burger-line-2" class="absolute top-1/2 left-0 -translate-y-1/2 w-7 h-[3px] bg-gray-300 rounded-full"></span>
+        </div>
+    </button>
+</nav>
+
+<!-- Access Portal panel — slides in from right, same width as button, full height -->
+<div
+    id="portal-panel"
+    class="fixed top-[46px] right-0 z-50 hidden lg:flex flex-col bg-black-900 border-l border-b border-gray-500 overflow-hidden"
+    style="width: 144px; min-width: 144px; height: calc(100vh - 46px); transform: translateX(100%); pointer-events: none;"
+>
+    <!-- Close button -->
+    <button
+        id="portal-close"
+        aria-label="Close portal panel"
+        class="self-end p-3 text-gray-500 hover:text-gray-300 transition-colors duration-200"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+    </button>
+
+    <!-- Content -->
+    <div class="px-4 pt-2 pb-6 flex flex-col gap-4 overflow-y-auto">
+        <p class="text-gray-300 text-xs leading-relaxed">
+            We are currently in our development stage, preparing to
+            <span class="text-accent">launch in September 2026</span>.
+            This deliberate timeline allows us to refine compliance,
+            strengthen banking relationships, and build a foundation
+            that is as resilient as it is transparent.
+        </p>
+    </div>
+</div>
+
+<!-- Mobile menu overlay — full screen, controlled by GSAP -->
+<div
+    id="mobile-menu"
+    class="fixed inset-0 z-40 flex flex-col justify-between pb-4 bg-black-900 pt-20 overflow-hidden lg:hidden"
+    style="clip-path: inset(0 0 100% 0); pointer-events: none;"
+>
+    <ul class="flex flex-col px-6 mt-4">
+        <li class="mobile-menu-item ">
+            <a href="#ecosystem" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+                Ecosystem
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="#custody" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+                Custody & Segregation
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="#risk" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+                Risk & Governance
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="#global" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+                Global Network
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="#intermediaries" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+                For Intermediaries
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Access Portal CTA 
+    <div class="mobile-menu-cta mt-auto mb-10 px-6">
+        <a href="#" class="flex items-center gap-3 px-5 py-4 border border-gray-500 text-gray-300 hover:text-accent hover:border-accent transition-colors duration-200 text-sm">
+            Access Portal
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 9a1 1 0 0 0 1-1V5.061a1 1 0 0 1 1.811-.75l6.836 6.836a1.207 1.207 0 0 1 0 1.707l-6.836 6.835a1 1 0 0 1-1.811-.75V16a1 1 0 0 0-1-1H9a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z"/><path d="M4 9v6"/></svg>
+        </a>
+    </div>-->
+    <p class="text-gray-300 text-sm px-6">We are currently in our development stage, preparing to <span class="text-accent">launch in September 2026</span>. This deliberate timeline allows us to refine compliance, strengthen banking relationships, and build a foundation that is as resilient as it is transparent.</p>
+</div>

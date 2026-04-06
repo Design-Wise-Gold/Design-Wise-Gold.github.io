@@ -1,84 +1,37 @@
 ---
 import "../styles/global.css";
-import logotipo from "../assets/Logos/logotipo__wisegGold.svg";
-import Item__menu from "./item__menu.astro";
 import video1 from "../assets/Videos/video_1.mp4";
 import video2 from "../assets/Videos/video_2.mp4";
 import video3 from "../assets/Videos/video_3.mp4";
+import Navbar from "./navbar.astro";
 ---
 
 <header
-  class="flex flex-col lg:flex-row justify-center items-center h-auto  xl:h-auto  px-4 md:px-8 gap-8 lg:gap-32 pt-16  pb-8 lg:py-24"
+  class="flex flex-col lg:flex-row justify-center items-center h-auto xl:h-auto px-4 md:px-8 gap-8 lg:gap-32 pt-16 pb-8 lg:py-24"
 >
-  <nav
-    class="flex fixed left-0 right-0 justify-between items-center h-auto w-full border-solid border-gray-500 border-b-[0.2px] bg-black-900 z-50 top-0"
-  >
-    <a href="#"
-      ><img
-        class="w-[144px] px-6 py-4 h-full border-r-0 lg:border-r-[0.2px] border-gray-500 "
-        src={logotipo.src}
-        alt="logotipo wisegold"
-      /></a
-    >
-
-    <ul class="hidden lg:flex gap-6">
-      <Item__menu title="Ecosystem" link="#ecosystem" />
-      <Item__menu title="Custody & Segregation" link="#custody" />
-      <Item__menu title="Risk & Governance" link="#risk" />
-      <Item__menu title="Global Network" link="#global" />
-      <Item__menu title="For Intermediaries" link="#intermediaries" />
-    </ul>
-    <a
-      href="#"
-      class="hover:group text-gray-300 hidden lg:flex items-center gap-2 px-4 h-[46px] py-2 hover:bg-gray-900 hover:text-accent w-fit border-gray-500 border-l-[0.2px] hover:border-accent hover:border-[0.2px] min-w-[144px]"
-    >
-      <span class="group-hover:text-accent text-sm">Access Portal</span>
-      <svg
-        class="w-5 group-hover:text-accent"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        class="lucide lucide-arrow-big-right-dash-icon lucide-arrow-big-right-dash"
-        ><path
-          d="M11 9a1 1 0 0 0 1-1V5.061a1 1 0 0 1 1.811-.75l6.836 6.836a1.207 1.207 0 0 1 0 1.707l-6.836 6.835a1 1 0 0 1-1.811-.75V16a1 1 0 0 0-1-1H9a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z"
-        ></path><path d="M4 9v6"></path></svg
-      >
-    </a>
-
-    <button class="text-black-900 lg:hidden">
-      <div>
-        <span class="w-6 h-2 bg-gray-500"></span>
-        <span class="w-6 h-2 bg-gray-500"></span>
-        <span class="w-6 h-2 bg-gray-500"></span>
-      </div>
-    </button>
-  </nav>
+  <Navbar />
 
   <!-- Text content block -->
-  <article class="flex flex-col w-full justify-center border-r-0">
-    <span class="text-gray-400 text-sm flex gap-2 items-center"
+  <article id="hero-left" class="flex flex-col w-full justify-center border-r-0">
+    <span id="hero-eyebrow" class="text-gray-400 text-sm flex gap-2 items-center"
       ><div class="w-2 h-2 bg-accent rounded-4xl"></div>INSTITUTIONAL BULLION
       INFRASTRUCTURE</span
     >
     <h1
+      id="hero-h1"
       class="text-4xl md:text-5xl text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 font-medium mt-2"
     >
       An Integrated Bullion Infrastructure for<span class="text-accent"
-        >Professional Intermediaries</span
+        > Professional Intermediaries</span
       >
     </h1>
-    <p class="text-gray-300 my-3 text-sm md:text-base w-full lg:w-2/3">
+    <p id="hero-p" class="text-gray-300 my-3 text-sm md:text-base w-full lg:w-2/3">
       A unified ecosystem encompassing advisory, independent vault coordination,
       technology, and proprietary trading. Engineered exclusively for capital
       preservation and institutional continuity
     </p>
     <a
+      id="hero-cta"
       href="#"
       class="hover:group flex items-center justify-between px-4 h-[50px] py-2 hover:bg-gray-900 hover:text-accent w-full lg:w-fit lg:gap-2 border-gray-500 border-2 hover:border-accent hover:border-2"
     >
@@ -104,11 +57,12 @@ import video3 from "../assets/Videos/video_3.mp4";
   </article>
 
   <!-- Right article: video + cards -->
-  <article class="relative z-10 w-full lg:w-2/3 h-auto gap-4 flex flex-col">
-    <span class="text-white-700 text-sm flex gap-2 items-center"
+  <article id="hero-right" class="relative z-10 w-full lg:w-2/3 h-auto gap-4 flex flex-col">
+    <span id="hero-right-label" class="text-white-700 text-sm flex gap-2 items-center"
       ><div class="w-2 h-2 bg-accent rounded-4xl"></div>Global Reach</span
     >
     <video
+      id="hero-video-main"
       src={video1}
       autoplay
       muted
@@ -116,7 +70,10 @@ import video3 from "../assets/Videos/video_3.mp4";
       playsinline
       class="w-full h-44 lg:h-full object-cover border border-gray-500 rounded-2xl lg:rounded-4xl"
     ></video>
-    <div class="flex border border-gray-500 rounded-2xl p-4 gap-4 hover:bg-gray-900">
+    <div
+      id="hero-card-1"
+      class="flex border border-gray-500 rounded-2xl p-4 gap-4 hover:bg-gray-900"
+    >
       <p class="flex flex-col text-white-700 text-sm gap-3">
         Operational Backbone<span class="text-gray-400 text-sm"
           >Integrated consulting, logistics, and technology for bullion
@@ -131,7 +88,10 @@ import video3 from "../assets/Videos/video_3.mp4";
         playsinline
         class="w-20 h-20 object-cover rounded-lg"></video>
     </div>
-    <div class="border border-gray-500 rounded-2xl p-4 hidden lg:flex hover:bg-gray-900">
+    <div
+      id="hero-card-2"
+      class="border border-gray-500 rounded-2xl p-4 hidden lg:flex hover:bg-gray-900"
+    >
       <p class="flex flex-col text-white-700 text-sm gap-3">
         Segregated Custody &amp; Compliance<span class="text-gray-400 text-sm"
           >Account-level segregation, independent vaults, and AML/CTF controls</span
