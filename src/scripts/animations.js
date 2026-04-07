@@ -5,13 +5,22 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 // ─────────────────────────────────────────────
-// INTRO CINEMATIC — Page load entrance
-// Coreografía: navbar → left col → right col
+// INTRO CINEMATIC — Modern preloader + page reveal
+// Splash logo → smooth reveal → navbar → hero
 // ─────────────────────────────────────────────
+
+
 function playIntro() {
+    const splash        = document.querySelector("#logo-splash");
+    const splashSvg     = document.querySelector("#logo-splash-svg");
+    const splashLetters = document.querySelectorAll(".splash-letter");
+    const logoTop       = document.querySelector("#logo__top");
+    const logoLink      = document.querySelector("#logo-link");
+
     // Estado inicial oculto de todos los actores
-    gsap.set("#navbar",            { y: -80, opacity: 0 });
+    gsap.set("#navbar",            { y: -60, opacity: 0 });
     gsap.set("#menu-desktop",      { opacity: 0 });
+    gsap.set(".menu-item",         { opacity: 0, y: -100 });
     gsap.set("#portal-toggle",     { opacity: 0, x: 20 });
     gsap.set("#hero-eyebrow",      { opacity: 0, y: 12 });
     gsap.set("#hero-h1",           { opacity: 0, y: 40, skewY: 2 });
@@ -22,27 +31,83 @@ function playIntro() {
     gsap.set("#hero-card-1",       { opacity: 0, x: 40 });
     gsap.set("#hero-card-2",       { opacity: 0, x: 40 });
 
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+    if (splashSvg && splashLetters.length > 0) {
+        // Revelar contenedor SVG general suavemente pero escalado
+        gsap.set(splashSvg, { opacity: 1, scale: 0.8 });
+        // Ocultar letras inicialmente
+        gsap.set(splashLetters, { opacity: 0, y: 10 });
+
+        tl
+            // ── OLA DE LETRAS Y DESTELLO ACCENT ──
+            .to(splashLetters, {
+                keyframes: [
+                    // Suben, aparecen, destello accent
+                    { opacity: 1, y: -8, fill: "#FAD906", duration: 0.4, ease: "power2.out" },
+                    // Bajan a su posición, vuelven a blanco puro
+                    { y: 0, fill: "#F2F4FF", duration: 0.4, ease: "power2.inOut" }
+                ],
+                stagger: 0.08, // Crea la ola izquierda -> derecha
+            })
+            // ── Pausa para leerlo ──
+            .to(splashSvg, { duration: 0.3 }) 
+            // ── Salida cinematográfica del logo completo ──
+            .to(splashSvg, {
+                opacity: 0,
+                scale: 1.2,
+                duration: 0.6,
+                ease: "power2.inOut",
+            })
+            // ── Quitar el fondo negro ──
+            .to(splash, {
+                opacity: 0,
+                duration: 0.5,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    if (splash) splash.style.display = "none";
+                }
+            }, "-=0.3");
+    } else {
+        // En caso de que se pierda el SVG, el splash sale para no tapar la web
+        tl.to(splash, { opacity: 0, duration: 0.5, onComplete: () => { if (splash) splash.style.display = "none"; } });
+    }
 
     tl
-        // — ACT 1: Navbar desciende —
-        .to("#navbar", { y: 0, opacity: 1, duration: 0.9, ease: "power4.out" })
+        // ── Navbar slides down gently ──
+        .to("#navbar", {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power3.out"
+        }, "-=0.3")
 
-        // — Logo ya está, ahora entran los links del menú desktop —
-        .to("#menu-desktop",  { opacity: 1, duration: 0.5 },              "-=0.4")
-        .to("#portal-toggle", { opacity: 1, x: 0, duration: 0.5 },        "-=0.45")
+        // ── Menu links appear ──
+        .to("#menu-desktop",  {  opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.4")
+        .to(".menu-item",     {  opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.2 }, "-=0.4")
+        .to("#portal-toggle", { opacity: 1, x: 0, duration: 0.6 },              "-=0.4")
 
-        // — ACT 2: Columna izquierda — se revela de arriba a abajo —
-        .to("#hero-eyebrow",  { opacity: 1, y: 0, duration: 0.55 },       "-=0.1")
-        .to("#hero-h1",       { opacity: 1, y: 0, skewY: 0, duration: 0.75, ease: "expo.out" }, "-=0.35")
-        .to("#hero-p",        { opacity: 1, y: 0, duration: 0.55 },       "-=0.4")
-        .to("#hero-cta",      { opacity: 1, y: 0, duration: 0.5 },        "-=0.35")
+        // ── Hero left column — staggered reveal ──
+        .to("#hero-eyebrow",  { opacity: 1, y: 0, duration: 0.6 },       "-=0.2")
+        .to("#hero-h1",       { opacity: 1, y: 0, skewY: 0, duration: 0.9, ease: "expo.out" }, "-=0.4")
+        .to("#hero-p",        { opacity: 1, y: 0, duration: 0.6 },       "-=0.5")
+        .to("#hero-cta",      { opacity: 1, y: 0, duration: 0.55 },      "-=0.4")
 
-        // — ACT 3: Columna derecha — entra desde la derecha simultáneamente con el CTA —
-        .to("#hero-right-label", { opacity: 1, x: 0, duration: 0.5 },     "-=0.4")
-        .to("#hero-video-main",  { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "expo.out" }, "-=0.35")
-        .to("#hero-card-1",      { opacity: 1, x: 0, duration: 0.55 },    "-=0.5")
-        .to("#hero-card-2",      { opacity: 1, x: 0, duration: 0.55 },    "-=0.4");
+        // ── Hero right column — slides in ──
+        .to("#hero-right-label", { opacity: 1, x: 0, duration: 0.55 },   "-=0.5")
+        .to("#hero-video-main",  { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "expo.out" }, "-=0.4")
+        .to("#hero-card-1",      { opacity: 1, x: 0, duration: 0.6 },    "-=0.55")
+        .to("#hero-card-2",      { opacity: 1, x: 0, duration: 0.6 },    "-=0.45");
+
+    // ── Desktop hover: white → accent gold ──
+    if (logoLink && logoTop) {
+        logoLink.addEventListener("mouseenter", () => {
+            gsap.to(logoTop, { duration: 0.3, ease: "power2.out"});
+        });
+        logoLink.addEventListener("mouseleave", () => {
+            gsap.to(logoTop, { duration: 0.3, ease: "power2.out" });
+        });
+    }
 }
 
 // Ejecutar cuando el DOM esté listo
@@ -201,3 +266,55 @@ document.querySelectorAll(".mobile-menu-link").forEach((link) => {
         if (menuOpen) closeMenu();
     });
 });
+
+// ─────────────────────────────────────────────
+// HERO EXIT & ECOSYSTEM ENTRANCE — Cinematic Scroll
+// ─────────────────────────────────────────────
+const heroHeader = document.querySelector("#hero-header");
+const ecosystemSection = document.querySelector("#ecosystem");
+
+if (heroHeader && ecosystemSection) {
+    // 1. Hero Exit (Reverse order of entrance, tied to scroll)
+    const tlHeroExit = gsap.timeline({
+        scrollTrigger: {
+            trigger: heroHeader,
+            start: "top top", // When top of hero hits viewport top
+            end: "60% top", // Termina cuando el 60% del hero haya pasado. Todo ocurre mucho antes y visible.
+            scrub: 1, // Smooth scrubbing
+        }
+    });
+
+    tlHeroExit
+        // Congregamos la salida: ambas columnas se van "juntas" casi al mismo tiempo pero escalonadas
+        // Derecha
+        .to(["#hero-card-2", "#hero-card-1"], { y: -80, opacity: 0, stagger: 0.05, duration: 1 }, 0)
+        .to("#hero-video-main",  { y: -80, scale: 0.95, opacity: 0, duration: 1 }, 0.1)
+        .to("#hero-right-label", { x: 30, opacity: 0, duration: 1 }, 0.2)
+        // Izquierda (cta, p, h1, span)
+        .to("#hero-cta",         { y: -40, opacity: 0, duration: 1 }, 0.15)
+        .to("#hero-p",           { y: -40, opacity: 0, duration: 1 }, 0.25)
+        .to("#hero-h1",          { y: -40, opacity: 0, duration: 1 }, 0.35)
+        .to("#hero-eyebrow",     { y: -20, opacity: 0, duration: 1 }, 0.45);
+
+
+    // 2. Ecosystem Cinematic Entrance
+    // Set initial state before scrolling
+    gsap.set("#eco-h2", { opacity: 0, x: 50 });
+    gsap.set("#eco-p", { opacity: 0, x: 50 });
+    gsap.set("#ecosystem article:first-child > *", { opacity: 0, y: 50 });
+
+    const tlEcoEnter = gsap.timeline({
+        scrollTrigger: {
+            trigger: ecosystemSection,
+            start: "top 75%", // Triggers when 25% of ecosystem is visible
+            toggleActions: "play reverse play reverse", // Animates based on view presence
+        }
+    });
+
+    tlEcoEnter
+        .to("#eco-h2", { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" })
+        .to("#eco-p", { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, "-=0.6")
+        .to("#ecosystem article:first-child > *", { 
+            opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "back.out(1.2)" 
+        }, "-=0.6");
+}
