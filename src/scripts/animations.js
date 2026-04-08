@@ -35,7 +35,7 @@ function playIntro() {
 
     if (splashSvg && splashLetters.length > 0) {
         // Revelar contenedor SVG general suavemente pero escalado
-        gsap.set(splashSvg, { opacity: 1, scale: 0.8 });
+        gsap.set(splashSvg, { opacity: 1, scale: 0.4 });
         // Ocultar letras inicialmente
         gsap.set(splashLetters, { opacity: 0, y: 10 });
 
@@ -297,24 +297,89 @@ if (heroHeader && ecosystemSection) {
         .to("#hero-eyebrow",     { y: -20, opacity: 0, duration: 1 }, 0.45);
 
 
-    // 2. Ecosystem Cinematic Entrance
+    // 2. Ecosystem Cinematic Entrance & Pinned Scroll
+    const ecoRight = document.querySelector("#ecosystem-right");
+    const ecoCards = gsap.utils.toArray("#ecosystem-left > *");
+
     // Set initial state before scrolling
     gsap.set("#eco-h2", { opacity: 0, x: 50 });
     gsap.set("#eco-p", { opacity: 0, x: 50 });
-    gsap.set("#ecosystem article:first-child > *", { opacity: 0, y: 50 });
+    gsap.set(ecoCards, { opacity: 0, y: 100 });
 
-    const tlEcoEnter = gsap.timeline({
+    // Animación de entrada de los textos fijos (derecha) al salir del Hero
+    gsap.to(["#eco-h2", "#eco-p"], {
+        opacity: 1, 
+        x: 0, 
+        duration: 1, 
+        stagger: 0.2,
+        ease: "power3.out",
         scrollTrigger: {
             trigger: ecosystemSection,
-            start: "top 75%", // Triggers when 25% of ecosystem is visible
-            toggleActions: "play reverse play reverse", // Animates based on view presence
+            start: "top 75%", // Se revela a medida que bajamos del Hero
+            toggleActions: "play none none reverse"
         }
     });
 
-    tlEcoEnter
-        .to("#eco-h2", { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" })
-        .to("#eco-p", { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, "-=0.6")
-        .to("#ecosystem article:first-child > *", { 
-            opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "back.out(1.2)" 
-        }, "-=0.6");
+    // Animación y Pin adaptativo Desktop vs Mobile
+    ScrollTrigger.matchMedia({
+        
+        // --- DESKTOP: Toda la sección se queda fija mientras las tarjetas rotan ---
+        "(min-width: 1024px)": function() {
+            // Bajamos las opacidades iniciales de las tarjetas para la animación
+            gsap.set(ecoCards, { opacity: 0, y: 40 });
+
+            // Timeline atado al scroll (Fija la sección)
+            const tlEcosystem = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ecosystemSection,
+                    start: "top top",       // Parará justo cuando llene la pantalla
+                    end: "+=3500",          // Le damos un largo receso de scroll ficticio (3500px)
+                    pin: true,
+                    scrub: 1,               // Scrub muy suave
+                }
+            });
+
+            // Recorremos las tarjetas para animar su Entrada, Pausa y Salida
+            ecoCards.forEach((card, i) => {
+                // 1. Entrada de la tarjeta
+                tlEcosystem.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    ease: "power2.out"
+                });
+
+                // 2. Tiempo de espera visible mientras sigues escroleando
+                tlEcosystem.to({}, { duration: 1.5 });
+
+                // 3. Salida de la tarjeta (todas desaparecen excepto la última)
+                if (i !== ecoCards.length - 1) {
+                    tlEcosystem.to(card, {
+                        opacity: 0,
+                        y: -40,
+                        duration: 1,
+                        ease: "power2.in"
+                    });
+                }
+            });
+        },
+
+        // --- MOBILE: Animación tradicional fluyendo de abajo hacia arriba ---
+        "(max-width: 1023px)": function() {
+            gsap.set(ecoCards, { opacity: 0, y: 50 });
+            ecoCards.forEach((card) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 95%",
+                        end: "center center",
+                        scrub: 2,
+                    }
+                });
+            });
+        }
+    });
 }

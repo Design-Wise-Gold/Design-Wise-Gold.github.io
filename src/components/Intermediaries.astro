@@ -183,7 +183,7 @@
 
 <!-- Reemplaza TU_SITE_KEY_PUBLICA con tu clave de sitio (Site Key) de reCAPTCHA v3 -->
 <!-- Normalmente en Astro puedes usar: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY -->
-<script is:inline src="https://www.google.com/recaptcha/api.js?render=TU_SITE_KEY_PUBLICA"></script>
+<script is:inline src="https://www.google.com/recaptcha/api.js?render=6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O"></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const form = document.querySelector("#intermediaries-form") as HTMLFormElement;
@@ -203,15 +203,17 @@
                     // @ts-ignore
                     grecaptcha.ready(function() {
                         // @ts-ignore - Reemplaza con tu clave pública
-                        grecaptcha.execute('TU_SITE_KEY_PUBLICA', {action: 'submit'}).then(async function(token: string) {
+                        grecaptcha.execute('6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O', {action: 'submit'}).then(async function(token: string) {
                             
                             // Recopilar los datos del formulario de manera segura
                             const formData = new FormData(form);
                             const formJSON = Object.fromEntries(formData.entries());
                             
-                            // Enviar el token Y los datos al backend
+                            // Enviar el token Y los datos al backend (PHP)
                             try {
-                                const response = await fetch('/recaptcha', {
+                                // 👇 Aquí hacemos el Call al nuevo endpoint PHP
+                                // Asegúrate de ajustar la ruta si el PHP está en otro dominio o carpeta
+                                const response = await fetch('/api/procesar_formulario.php', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({

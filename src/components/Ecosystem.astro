@@ -8,10 +8,11 @@ import video7 from "../assets/Videos/video_7.mp4";
 
 <section
     id="ecosystem"
-    class="flex flex-col-reverse lg:flex-row items-start lg:items-center justify-center h-auto w-full border-solid border-gray-500 border-t-[0.2px]  gap-4 lg:gap-16 lg:py-20 lg:pt-32"
+    class="bg-black-900 flex flex-col-reverse lg:flex-row items-start lg:items-center justify-center h-auto lg:min-h-dvh w-full border-solid border-gray-500 border-t-[0.2px]  gap-4 lg:gap-8 lg:py-12 relative z-10"
 >
     <article
-        class="w-full lg:w-auto flex flex-col items-center justify-center gap-4"
+        id="ecosystem-left"
+        class="w-full lg:w-1/2 grid items-center lg:*:col-start-1 lg:*:row-start-1 relative lg:min-h-[500px] gap-4 lg:gap-0"
     >
         <Card__ecosystem
             title="Advisory"
@@ -35,7 +36,8 @@ import video7 from "../assets/Videos/video_7.mp4";
         />
     </article>
     <article
-        class="w-auto lg:w-2/3 h-auto pt-3 flex flex-col items-center lg:items-right px-4 justify-end lg:pl-32"
+        id="ecosystem-right"
+        class="w-full lg:w-1/2 h-auto pt-3 flex flex-col items-center lg:items-right px-4 justify-end "
     >
         <h2
             id="eco-h2"
