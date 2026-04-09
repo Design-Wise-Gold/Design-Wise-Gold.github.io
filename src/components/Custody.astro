@@ -2,35 +2,89 @@
 import video from "../assets/Videos/custody.mp4";
 ---
 
-<section
-    id="custody"
-    class="flex flex-col items-center justify-center h-auto  w-full pt-12 pb-10 lg:py-24 gap-6"
->
-    <article
-        class="w-full h-auto flex flex-col items-center justify-center gap-2 px-4"
+<section id="custody-trigger" class="w-full relative h-[250vh]">
+    <div
+        id="custody"
+        class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-black-900"
     >
-        <h2
-            class="text-4xl md:text-5xl font-medium text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 mt-2 text-left lg:text-center w-full"
-        >
-            Institutional Grade Segregation & Custody Control
-        </h2>
-        <p
-            class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-center w-full lg:w-2/3"
-        >
-            A unified ecosystem encompassing advisory, independent vault
-            coordination, technology, and proprietary trading. Engineered
-            exclusively for capital preservation and institutional continuity
-        </p>
-    </article>
-    <article class="w-full h-96 flex flex-col items-center px-4 justify-center">
-        <video
-            src={video}
-            autoplay
-            muted
-            loop
-            playsinline
-            class="w-full h-full object-cover"
-        >
-        </video>
-    </article>
+        <div class="custody-content flex flex-col items-center justify-center w-full h-full gap-6">
+            <article
+                class="custody-text w-full flex flex-col items-center justify-center gap-2 px-4 flex-shrink-0"
+            >
+                <h2
+                    class="text-4xl md:text-5xl font-medium text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 mt-2 text-left lg:text-center w-full"
+                >
+                    Institutional Grade Segregation & Custody Control
+                </h2>
+                <p
+                    class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-center w-full lg:w-2/3"
+                >
+                    A unified ecosystem encompassing advisory, independent vault
+                    coordination, technology, and proprietary trading. Engineered
+                    exclusively for capital preservation and institutional continuity
+                </p>
+            </article>
+            <article class="custody-video-wrapper w-[92%] md:w-3/4 max-w-5xl h-96 md:h-[55vh] flex-shrink-0 overflow-hidden shadow-2xl relative z-10 p-0 m-0">
+                <video
+                    src={video}
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    class="w-full h-full object-cover"
+                >
+                </video>
+            </article>
+        </div>
+    </div>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const mm = gsap.matchMedia();
+
+        mm.add("(min-width: 1px)", () => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: "#custody-trigger",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1, // Smooth scrub
+                }
+            });
+
+            // Fade out and shrink the text
+            tl.to(".custody-text", {
+                opacity: 0,
+                y: -30,
+                height: 0,
+                padding: 0,
+                margin: 0,
+                duration: 1,
+                ease: "power2.inOut"
+            }, 0);
+
+            // Remove the gap in the flex container so video isn't pushed down
+            tl.to(".custody-content", {
+                gap: "0rem",
+                duration: 1,
+                ease: "power2.inOut"
+            }, 0);
+
+            // Expand video wrapper to fill screen completely
+            tl.to(".custody-video-wrapper", {
+                width: "100%",
+                maxWidth: "100%",
+                height: "100vh",
+                borderRadius: "0px",
+                duration: 1.5,
+                ease: "power2.inOut"
+            }, 0);
+        });
+    });
+</script>

@@ -1,0 +1,71 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/navbar.astro';
+import Footer from '../components/Footer.astro';
+
+// Fetch the LinkedIn posts
+const response = await fetch('https://raw.githubusercontent.com/development11tr/wisegold-scraper/main/WiseGoldLinkedInPosts.json');
+const posts = await response.json();
+---
+
+<Layout class="max-w-fit">
+    <Navbar />
+    
+	<main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
+        
+        <!-- Header Section occupying ~50% height -->
+        <section class="min-h-[50vh] flex flex-col justify-center items-center text-center px-4 md:px-12 py-32 border-b-[0.2px] border-gray-500">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bebas-neue text-gray-100 tracking mb-6">
+                WiseGold Blog 
+            </h1>
+            <span class="text-accent text-2xl">Weekly Pulse</span>
+            <p class="text-lg md:text-base text-gray-300 max-w-4xl font-light leading-relaxed">
+                Insights, market intelligence, and structural themes rewriting the rules of asset allocation. Follow our latest updates from LinkedIn.
+            </p>
+        </section>
+
+        <!-- Blog Posts List -->
+        <section class="py-20 px-4 md:px-12 flex flex-col gap-16">
+            {posts.map((post: any) => (
+                <article class="flex flex-col lg:flex-row gap-8 lg:gap-12 group">
+                    <div class="flex justify-center items-center w-full lg:w-3/5 h-auto overflow-hidden border-[0.2px] border-gray-500">
+                        <a href={post.url} target="_blank" rel="noopener noreferrer" class="block ">
+                            <img 
+                                src={post.image.replaceAll('&amp;', '&')} 
+                                alt={post.title} 
+                                class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                        </a>
+                    </div>
+                    <div class="w-full lg:w-3/5 flex flex-col justify-center py-4 lg:py-0">
+                        <span class="text-accent font-mono text-xs md:text-sm tracking-widest mb-4 block uppercase flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                            {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </span>
+                        <a href={post.url} target="_blank" rel="noopener noreferrer">
+                            <h2 class="text-3xl md:text-3xl font-bebas-neue text-gray-200 tracking-wide mb-6 group-hover:text-accent transition-colors duration-300 leading-tight">
+                                {post.title}
+                            </h2>
+                        </a>
+                        <p class="text-gray-300 leading-relaxed font-light mb-8 text-base  whitespace-pre-line">
+                            {post.text.length > 300 ? post.text.substring(0, 700) + "..." : post.text}
+                        </p>
+                        <a 
+                            href={post.url} 
+                            target="_blank" 
+                            rel="noopener noreferrer" 
+                            class="inline-flex items-center gap-3 text-gray-200 border-[0.2px] border-gray-500 px-8 py-4 w-fit hover:border-accent hover:text-accent transition-all duration-300 text-sm font-medium group-hover:bg-gray-900"
+                        >
+                            Read Full Post on LinkedIn
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </a>
+                    </div>
+                </article>
+            ))}
+        </section>
+
+    </main>
+    <Footer
+        class="border-t-[0.2px] border-gray-500 "
+     />
+</Layout>

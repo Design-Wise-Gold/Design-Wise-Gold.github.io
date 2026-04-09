@@ -7,10 +7,14 @@ import facebook from "../assets/Logos/facebook_logo.svg";
 import youtube from "../assets/Logos/youtube_logo.svg";
 import Item__menu from "./item__menu.astro";
 
+const { class: className } = Astro.props;
 ---
 
 <footer
-    class="flex items-center lg:flex-row flex-col justify-between lg:justify-center  h-dvh lg:h-auto w-full px-8 pt-32 pb-12 lg:py-12 lg:gap-20"
+    class:list={[
+        "flex items-center lg:flex-row flex-col justify-between lg:justify-center h-dvh lg:h-auto w-full px-8 pt-32 pb-12 lg:py-12 lg:gap-20",
+        className
+    ]}
 >
     <section
         class="w-full h-auto gap-4 flex flex-col items-center justify-center"

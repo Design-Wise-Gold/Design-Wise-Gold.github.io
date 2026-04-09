@@ -26,7 +26,7 @@ import Item__menu from "./item__menu.astro";
     id="navbar"
     class="flex fixed left-0 right-0 justify-between items-center h-auto w-full border-solid border-gray-500 border-b-[0.2px] bg-black-900 z-50 top-0"
 >
-    <a id="logo-link" href="#" class="border-r-0 lg:border-r-[0.2px] border-gray-500">
+    <a id="logo-link" href="/" class="border-r-0 lg:border-r-[0.2px] border-gray-500">
         <img
             class="w-[143px] px-6 py-4 h-full"
             src={logotipo.src}
@@ -36,11 +36,12 @@ import Item__menu from "./item__menu.astro";
     </a>
 
     <ul id="menu-desktop" class="hidden lg:flex gap-6">
-        <Item__menu class="menu-item" title="Ecosystem" link="#ecosystem" />
-        <Item__menu class="menu-item" title="Custody & Segregation" link="#custody" />
-        <Item__menu class="menu-item" title="Risk & Governance" link="#risk" />
-        <Item__menu class="menu-item" title="Global Network" link="#global" />
-        <Item__menu class="menu-item" title="For Intermediaries" link="#intermediaries" />
+        <Item__menu class="menu-item" title="Ecosystem" link="/#ecosystem" />
+        <Item__menu class="menu-item" title="Custody & Segregation" link="/#custody" />
+        <Item__menu class="menu-item" title="Risk & Governance" link="/#risk" />
+        <Item__menu class="menu-item" title="Global Network" link="/#global" />
+        <Item__menu class="menu-item" title="For Intermediaries" link="/#intermediaries" />
+        <Item__menu class="menu-item" title="Blog" link="/blog" />
     </ul>
 
     <button
@@ -116,32 +117,38 @@ import Item__menu from "./item__menu.astro";
 >
     <ul class="flex flex-col px-6 mt-4">
         <li class="mobile-menu-item ">
-            <a href="#ecosystem" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+            <a href="/#ecosystem" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
                 Ecosystem
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
         </li>
         <li class="mobile-menu-item">
-            <a href="#custody" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+            <a href="/#custody" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
                 Custody & Segregation
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
         </li>
         <li class="mobile-menu-item">
-            <a href="#risk" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+            <a href="/#risk" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
                 Risk & Governance
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
         </li>
         <li class="mobile-menu-item">
-            <a href="#global" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+            <a href="/#global" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
                 Global Network
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
         </li>
         <li class="mobile-menu-item">
-            <a href="#intermediaries" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+            <a href="/#intermediaries" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
                 For Intermediaries
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </li>
+        <li class="mobile-menu-item">
+            <a href="/blog" class="mobile-menu-link flex items-center justify-between py-5 w-full text-3xl font-bebas-neue text-gray-300 tracking-widest hover:text-accent transition-colors duration-200">
+                Blog
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </a>
         </li>
