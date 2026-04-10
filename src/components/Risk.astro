@@ -32,6 +32,7 @@ import image4 from "../assets/Images/image_4.png";
         </p>
     </article>
     <article
+        id="risk-cards"
         class="w-full flex flex-col lg:flex-row items-end px-4 justify-center gap-4 lg:min-h-[400px]"
     >
         <Card__Risk
@@ -60,3 +61,71 @@ import image4 from "../assets/Images/image_4.png";
         />
     </article>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const initRiskPinnedAnimation = () => {
+            const riskSection = document.querySelector("#risk");
+            const headers = document.querySelectorAll("#risk h2, #risk p");
+            const cards = gsap.utils.toArray("#risk-cards > *");
+
+            if (!riskSection || cards.length === 0) return;
+
+            // Create a single unified pinned timeline for the whole section
+            const mainTl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: riskSection,
+                    start: "top top",
+                    end: "+=2500", // Increased distance for a slower, more cinematic feel
+                    pin: true,     // Section stays pinned while cards reveal
+                    scrub: 1,      // Tied to scroll progress
+                    invalidateOnRefresh: true
+                }
+            });
+
+            // PHASE 1: Headers entrance (0 to 0.5)
+            mainTl.fromTo(headers, 
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, stagger: 0.1, duration: 0.5, ease: "power2.out" },
+                0
+            );
+
+            // PHASE 2: Sequential Card Reveal (One by One)
+            // We use overlapping labels/offsets to ensure a "one by one" wave
+            cards.forEach((card, i) => {
+                const startTime = 0.4 + (i * 0.4); // Staggered start times
+                
+                mainTl.fromTo(card,
+                    { 
+                        opacity: 0, 
+                        y: 150 // Deep offset for parallax arrival
+                    },
+                    { 
+                        opacity: 1, 
+                        y: 0, 
+                        duration: 0.6,
+                        ease: "power2.out" 
+                    },
+                    startTime
+                );
+            });
+
+            // PHASE 3: Brief hold at the end for the last card (to avoid cutting off)
+            mainTl.to({}, { duration: 0.5 }); // Final pause at 100% visible
+
+            ScrollTrigger.refresh();
+        };
+
+        initRiskPinnedAnimation();
+        
+        // Safety refresh for complex layouts
+        window.addEventListener("load", () => ScrollTrigger.refresh());
+        setTimeout(() => ScrollTrigger.refresh(), 1000);
+    });
+</script>
+

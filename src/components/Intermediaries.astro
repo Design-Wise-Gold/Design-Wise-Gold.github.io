@@ -262,4 +262,71 @@
             });
         }
     });
+
+    // Cinematic Entrance Animations
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const mm = gsap.matchMedia();
+
+        mm.add("(min-width: 1px)", () => {
+            // Section container entrance (Smooth Scale/Fade)
+            gsap.from("#intermediaries > div", {
+                opacity: 0,
+                scale: 0.98,
+                duration: 1.5,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#intermediaries",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            // Headers Reveal
+            gsap.from("#intermediaries h4, #intermediaries p", {
+                opacity: 0,
+                y: 30,
+                stagger: 0.2,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#intermediaries",
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            // Form Fields Staggered Reveal
+            gsap.from("#intermediaries-form > div", {
+                opacity: 0,
+                y: 20,
+                stagger: 0.1,
+                duration: 1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: "#intermediaries-form",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+
+            // Right-side Info Articles Sequence
+            gsap.from("#intermediaries article.border", {
+                opacity: 0,
+                x: 30,
+                stagger: 0.2,
+                duration: 1.2,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#intermediaries .lg\\:w-2\\/5",
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            });
+        });
+    });
 </script>

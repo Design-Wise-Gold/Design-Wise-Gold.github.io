@@ -13,7 +13,13 @@ import "../styles/global.css";
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 		<title>WiseGold</title>
-      		
+		<script is:inline>
+			// Force page to start at the top on every reload to avoid animation desync
+			if ('scrollRestoration' in history) {
+				history.scrollRestoration = 'manual';
+			}
+			window.scrollTo(0, 0);
+		</script>
 	</head>
 	<body>
 		<!-- Gold bullion particle canvas — full page -->

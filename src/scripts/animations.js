@@ -383,3 +383,29 @@ if (heroHeader && ecosystemSection) {
         }
     });
 }
+
+// ─────────────────────────────────────────────
+// FOOTER LOGO — Letter by letter scroll reveal
+// ─────────────────────────────────────────────
+const footerLogo = document.querySelector("#footer-logo-svg");
+const footerLetters = document.querySelectorAll(".footer-letter");
+
+if (footerLogo && footerLetters.length > 0) {
+    // Initial state set via GSAP to ensure no flicker if JS loads late
+    gsap.set(footerLetters, { opacity: 0, y: 50 });
+
+    gsap.to(footerLetters, {
+        opacity: 1,
+        y: 0,
+        stagger: 0.3,        // Increased stagger for more separation between letters
+        ease: "power2.out",  // Slightly stronger ease for a more premium "landing" feel
+        scrollTrigger: {
+            trigger: footerLogo,
+            start: "top bottom", // Starts as soon as the logo enters the viewport from below
+            end: "bottom bottom", // Completes exactly when the logo reaches its final resting position
+            scrub: 3,            // Significant lag for an ultra-smooth, high-end feel
+        }
+    });
+}
+
+

@@ -4,9 +4,10 @@ import Card__global from "./card__global.astro";
 
 <section
     id="global"
-    class="flex flex-col-reverse lg:flex-row items-start lg:items-center justify-center h-auto  w-full border-solid border-gray-500 border-t-[0.2px] py-8 lg:py-24 gap-4 lg:gap-8"
+    class="relative z-20 flex flex-col-reverse lg:flex-row items-start lg:items-center justify-center h-auto w-full border-solid border-gray-500 border-t-[0.2px] py-8 lg:py-24 gap-4 lg:gap-8 bg-black-900"
 >
     <article
+        id="global-cards"
         class="w-full lg:w-auto flex flex-col items-center justify-center gap-4"
     >
         <Card__global
@@ -31,6 +32,7 @@ import Card__global from "./card__global.astro";
         />
     </article>
     <article
+        id="global-header"
         class="w-auto lg:w-2/3 h-auto pt-3 flex flex-col items-center lg:items-right px-4 justify-end lg:pl-32"
     >
         <h2
@@ -46,3 +48,57 @@ import Card__global from "./card__global.astro";
         </p>
     </article>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const initGlobalAnimations = () => {
+            // 1. Header reveal (Slide from right)
+            gsap.fromTo("#global-header > *", 
+                { opacity: 0, x: 30 },
+                {
+                    opacity: 1,
+                    x: 0,
+                    stagger: 0.2,
+                    duration: 1,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: "#global-header",
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            // 2. Cards reveal (Slide from below)
+            gsap.fromTo("#global-cards > *", 
+                { opacity: 0, y: 40 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    stagger: 0.15,
+                    duration: 1.2,
+                    ease: "expo.out",
+                    scrollTrigger: {
+                        trigger: "#global-cards",
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+
+            ScrollTrigger.refresh();
+        };
+
+        initGlobalAnimations();
+        
+        // Essential for sections following large pinned blocks (like Risk)
+        window.addEventListener("load", () => ScrollTrigger.refresh());
+        setTimeout(() => ScrollTrigger.refresh(), 1200);
+    });
+</script>
+
