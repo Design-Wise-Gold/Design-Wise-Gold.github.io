@@ -8,6 +8,7 @@ import Intermediaries from '../components/Intermediaries.astro';
 import Footer from '../components/Footer.astro';
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/navbar.astro';
+import RecaptchaNotice from '../components/RecaptchaNotice.astro';
 ---
 
 <Layout class="max-w-fit">
@@ -20,6 +21,7 @@ import Navbar from '../components/navbar.astro';
 		<Global />
 	</main>
 	<Intermediaries />
-	<Footer />    
+	<Footer />
+	<RecaptchaNotice />    
     <script src="https://www.google.com/recaptcha/api.js"></script> 
 </Layout>

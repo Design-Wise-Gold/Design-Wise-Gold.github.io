@@ -18,3 +18,8 @@
   --font-urbanist: 'Urbanist', sans-serif;
   --font-bebas-neue: 'Bebas Neue', sans-serif;
 }
+
+/* Ocultar el badge de reCAPTCHA v3 */
+.grecaptcha-badge {
+  visibility: hidden;
+}
