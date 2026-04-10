@@ -8,10 +8,14 @@ import video3 from "../assets/Videos/video_3.mp4";
   id="hero-header"
   class="sticky top-0 z-0 flex flex-col lg:flex-row justify-center items-center h-auto min-h-dvh xl:h-auto px-4 md:px-8 gap-8 lg:gap-32 pt-16 pb-8 lg:py-24"
 >
-
   <!-- Text content block -->
-  <article id="hero-left" class="flex flex-col w-full justify-center border-r-0">
-    <span id="hero-eyebrow" class="text-gray-400 text-sm flex gap-2 items-center"
+  <article
+    id="hero-left"
+    class="flex flex-col w-full justify-center border-r-0"
+  >
+    <span
+      id="hero-eyebrow"
+      class="text-gray-400 text-sm flex gap-2 items-center"
       ><div class="w-2 h-2 bg-accent rounded-4xl"></div>INSTITUTIONAL BULLION
       INFRASTRUCTURE</span
     >
@@ -19,11 +23,14 @@ import video3 from "../assets/Videos/video_3.mp4";
       id="hero-h1"
       class="text-4xl md:text-5xl text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 font-medium mt-2"
     >
-      An Integrated Bullion Infrastructure for<span class="text-accent"
-        > Professional Intermediaries</span
+      An Integrated Bullion Infrastructure for<span class="text-accent">
+        Professional Intermediaries</span
       >
     </h1>
-    <p id="hero-p" class="text-gray-300 my-3 text-sm md:text-base w-full lg:w-2/3">
+    <p
+      id="hero-p"
+      class="text-gray-300 my-3 text-sm md:text-base w-full lg:w-2/3"
+    >
       A unified ecosystem encompassing advisory, independent vault coordination,
       technology, and proprietary trading. Engineered exclusively for capital
       preservation and institutional continuity
@@ -31,9 +38,9 @@ import video3 from "../assets/Videos/video_3.mp4";
     <a
       id="hero-cta"
       href="#"
-      class="hover:group flex items-center justify-between px-4 h-[50px] py-2 hover:bg-gray-900 hover:text-accent w-full lg:w-fit lg:gap-2 border-gray-500 border-2 hover:border-accent hover:border-2"
+      class="hover:group flex items-center justify-between px-4 h-[50px] py-2 hover:bg-gray-900 hover:text-accent w-full md:w-fit md:gap-2 border-gray-500 border-2 hover:border-accent hover:border-2"
     >
-      <span class="group-hover:text-accent text-white-700 text-xs lg:text-sm"
+      <span class="group-hover:text-accent text-white-700 text-xs md:text-base"
         >Built exclusively for professional intermediaries</span
       >
       <svg
@@ -55,8 +62,13 @@ import video3 from "../assets/Videos/video_3.mp4";
   </article>
 
   <!-- Right article: video + cards -->
-  <article id="hero-right" class="relative z-10 w-full lg:w-2/3 h-auto gap-4 flex flex-col">
-    <span id="hero-right-label" class="text-white-700 text-sm flex gap-2 items-center"
+  <article
+    id="hero-right"
+    class="relative z-10 w-full lg:w-2/3 h-auto gap-4 flex flex-col"
+  >
+    <span
+      id="hero-right-label"
+      class="text-white-700 text-sm flex gap-2 items-center"
       ><div class="w-2 h-2 bg-accent rounded-4xl"></div>Global Reach</span
     >
     <video
@@ -66,11 +78,11 @@ import video3 from "../assets/Videos/video_3.mp4";
       muted
       loop
       playsinline
-      class="w-full h-44 lg:h-full object-cover border border-gray-500 rounded-2xl lg:rounded-4xl"
+      class="w-full h-full object-cover border border-gray-500 rounded-2xl lg:rounded-4xl"
     ></video>
     <div
       id="hero-card-1"
-      class="flex border border-gray-500 rounded-2xl p-4 gap-4 hover:bg-gray-900"
+      class="flex border border-gray-500 rounded-2xl p-4 gap-4 hidden md:flex md:justify-between lg:justify-start hover:bg-gray-900"
     >
       <p class="flex flex-col text-white-700 text-sm gap-3">
         Operational Backbone<span class="text-gray-400 text-sm"
@@ -84,11 +96,11 @@ import video3 from "../assets/Videos/video_3.mp4";
         muted
         loop
         playsinline
-        class="w-20 h-20 object-cover rounded-lg"></video>
+        class="w-20 md:w-auto lg:w-20 h-20 md:h-30 lg:h-20 object-cover rounded-lg"></video>
     </div>
     <div
       id="hero-card-2"
-      class="border border-gray-500 rounded-2xl p-4 hidden lg:flex hover:bg-gray-900"
+      class="border border-gray-500 rounded-2xl p-4 hidden md:flex md:justify-between lg:justify-start hover:bg-gray-900"
     >
       <p class="flex flex-col text-white-700 text-sm gap-3">
         Segregated Custody &amp; Compliance<span class="text-gray-400 text-sm"
@@ -101,7 +113,7 @@ import video3 from "../assets/Videos/video_3.mp4";
         muted
         loop
         playsinline
-        class="w-20 h-20 object-cover rounded-lg"></video>
+        class="w-20 h-20 object-cover rounded-lg md:w-auto md:h-30 lg:w-20 lg:h-20"></video>
     </div>
   </article>
 </header>

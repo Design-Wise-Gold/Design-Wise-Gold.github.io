@@ -287,14 +287,14 @@ if (heroHeader && ecosystemSection) {
     tlHeroExit
         // Congregamos la salida: ambas columnas se van "juntas" casi al mismo tiempo pero escalonadas
         // Derecha
-        .to(["#hero-card-2", "#hero-card-1"], { y: -80, opacity: 0, stagger: 0.05, duration: 1 }, 0)
-        .to("#hero-video-main",  { y: -80, scale: 0.95, opacity: 0, duration: 1 }, 0.1)
-        .to("#hero-right-label", { x: 30, opacity: 0, duration: 1 }, 0.2)
+        .to(["#hero-card-2", "#hero-card-1"], { y: -80, opacity: 0, duration: 1 }, 0)
+        .to("#hero-video-main",  { y: -80, opacity: 0, duration: 1 }, 0.1)
+        .to("#hero-right-label", { y: -80, opacity: 0, duration: 1 }, 0.2)
         // Izquierda (cta, p, h1, span)
         .to("#hero-cta",         { y: -40, opacity: 0, duration: 1 }, 0.15)
         .to("#hero-p",           { y: -40, opacity: 0, duration: 1 }, 0.25)
         .to("#hero-h1",          { y: -40, opacity: 0, duration: 1 }, 0.35)
-        .to("#hero-eyebrow",     { y: -20, opacity: 0, duration: 1 }, 0.45);
+        .to("#hero-eyebrow",     { y: -40, opacity: 0, duration: 1 }, 0.45);
 
 
     // 2. Ecosystem Cinematic Entrance & Pinned Scroll
@@ -318,94 +318,97 @@ if (heroHeader && ecosystemSection) {
             start: "top 75%", // Se revela a medida que bajamos del Hero
             toggleActions: "play none none reverse"
         }
+        
     });
 
     // Animación y Pin adaptativo Desktop vs Mobile
-    ScrollTrigger.matchMedia({
-        
-        // --- DESKTOP: Toda la sección se queda fija mientras las tarjetas rotan ---
-        "(min-width: 1024px)": function() {
-            // Bajamos las opacidades iniciales de las tarjetas para la animación
-            gsap.set(ecoCards, { opacity: 0, y: 40 });
+    const mm = gsap.matchMedia();
 
-            // Timeline atado al scroll (Fija la sección)
-            const tlEcosystem = gsap.timeline({
-                scrollTrigger: {
-                    trigger: ecosystemSection,
-                    start: "top top",       // Parará justo cuando llene la pantalla
-                    end: "+=3500",          // Le damos un largo receso de scroll ficticio (3500px)
-                    pin: true,
-                    scrub: 1,               // Scrub muy suave
-                }
+    // --- DESKTOP: Toda la sección se queda fija mientras las tarjetas rotan ---
+    mm.add("(min-width: 1024px)", () => {
+        // Bajamos las opacidades iniciales de las tarjetas para la animación
+        gsap.set(ecoCards, { opacity: 0, y: 40 });
+
+        // Timeline atado al scroll (Fija la sección)
+        const tlEcosystem = gsap.timeline({
+            scrollTrigger: {
+                trigger: ecosystemSection,
+                start: "top top",       // Parará justo cuando llene la pantalla
+                end: "+=3500",          // Le damos un largo receso de scroll ficticio (3500px)
+                pin: true,
+                scrub: 1,               // Scrub muy suave
+            }
+        });
+
+        // Recorremos las tarjetas para animar su Entrada, Pausa y Salida
+        ecoCards.forEach((card, i) => {
+            // 1. Entrada de la tarjeta
+            tlEcosystem.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                ease: "power2.out"
             });
 
-            // Recorremos las tarjetas para animar su Entrada, Pausa y Salida
-            ecoCards.forEach((card, i) => {
-                // 1. Entrada de la tarjeta
+            // 2. Tiempo de espera visible mientras sigues escroleando
+            tlEcosystem.to({}, { duration: 1.5 });
+
+            // 3. Salida de la tarjeta (todas desaparecen excepto la última)
+            if (i !== ecoCards.length - 1) {
                 tlEcosystem.to(card, {
-                    opacity: 1,
-                    y: 0,
+                    opacity: 0,
+                    y: -40,
                     duration: 1,
-                    ease: "power2.out"
+                    ease: "power2.in"
                 });
+            }
+        });
+    });
 
-                // 2. Tiempo de espera visible mientras sigues escroleando
-                tlEcosystem.to({}, { duration: 1.5 });
-
-                // 3. Salida de la tarjeta (todas desaparecen excepto la última)
-                if (i !== ecoCards.length - 1) {
-                    tlEcosystem.to(card, {
-                        opacity: 0,
-                        y: -40,
-                        duration: 1,
-                        ease: "power2.in"
-                    });
+    // --- MOBILE: Animación tradicional fluyendo de abajo hacia arriba ---
+    mm.add("(max-width: 1023px)", () => {
+        gsap.set(ecoCards, { opacity: 0, y: 50 });
+        ecoCards.forEach((card) => {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 95%",
+                    end: "center center",
+                    scrub: 2,
                 }
             });
-        },
-
-        // --- MOBILE: Animación tradicional fluyendo de abajo hacia arriba ---
-        "(max-width: 1023px)": function() {
-            gsap.set(ecoCards, { opacity: 0, y: 50 });
-            ecoCards.forEach((card) => {
-                gsap.to(card, {
-                    opacity: 1,
-                    y: 0,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: card,
-                        start: "top 95%",
-                        end: "center center",
-                        scrub: 2,
-                    }
-                });
-            });
-        }
+        });
     });
 }
 
 // ─────────────────────────────────────────────
-// FOOTER LOGO — Letter by letter scroll reveal
+// FOOTER LOGO — Letter by letter scroll reveal (GLOBAL)
 // ─────────────────────────────────────────────
-const footerLogo = document.querySelector("#footer-logo-svg");
-const footerLetters = document.querySelectorAll(".footer-letter");
+const footerLogos = document.querySelectorAll("#footer-logo-svg");
 
-if (footerLogo && footerLetters.length > 0) {
-    // Initial state set via GSAP to ensure no flicker if JS loads late
-    gsap.set(footerLetters, { opacity: 0, y: 50 });
+footerLogos.forEach((logo) => {
+    const letters = logo.querySelectorAll(".footer-letter");
+    
+    if (letters.length > 0) {
+        // Initial state set via GSAP
+        gsap.set(letters, { opacity: 0, y: 50 });
 
-    gsap.to(footerLetters, {
-        opacity: 1,
-        y: 0,
-        stagger: 0.3,        // Increased stagger for more separation between letters
-        ease: "power2.out",  // Slightly stronger ease for a more premium "landing" feel
-        scrollTrigger: {
-            trigger: footerLogo,
-            start: "top bottom", // Starts as soon as the logo enters the viewport from below
-            end: "bottom bottom", // Completes exactly when the logo reaches its final resting position
-            scrub: 3,            // Significant lag for an ultra-smooth, high-end feel
-        }
-    });
-}
+        gsap.to(letters, {
+            opacity: 1,
+            y: 0,
+            stagger: 0.3,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: logo,      // Using the specific logo as trigger
+                start: "top bottom",
+                end: "bottom bottom",
+                scrub: 3,
+            }
+        });
+    }
+});
 
 

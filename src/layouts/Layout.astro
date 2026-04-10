@@ -82,7 +82,7 @@ import "../styles/global.css";
 
     // Only spawn when mouse is moving
     const speed = Math.sqrt(mouseVel.x * mouseVel.x + mouseVel.y * mouseVel.y);
-    if (speed < 0.8) return;
+    if (speed < 0.2) return;
 
     // Spawn near cursor with slight random offset
     const offsetAngle = Math.random() * Math.PI * 2;
@@ -91,7 +91,7 @@ import "../styles/global.css";
     const y = mouse.y + Math.sin(offsetAngle) * offsetR;
 
     // Velocity inherits mouse direction + some spread
-    const spread = 0.6;
+    const spread = 0;
     const vx = mouseVel.x * (0.3 + Math.random() * 0.4) + (Math.random() - 0.5) * spread;
     const vy = mouseVel.y * (0.3 + Math.random() * 0.4) + (Math.random() - 0.5) * spread;
 
@@ -238,15 +238,15 @@ import "../styles/global.css";
 		box-sizing: border-box;
 		font-family: var(--font-urbanist);
     scroll-behavior: smooth;
+    
 	}
 
 	body {
 		margin: 0 auto;
 		width: 100%;
 		max-width: 1920px;
-		background-color: var(--color-black-900);
 		box-sizing: border-box;
 		font-family: var(--font-urbanist);
-		overflow-x: hidden;
+		
 	}
 </style>
