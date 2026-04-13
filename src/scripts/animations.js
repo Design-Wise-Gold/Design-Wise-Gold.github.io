@@ -384,31 +384,4 @@ if (heroHeader && ecosystemSection) {
     });
 }
 
-// ─────────────────────────────────────────────
-// FOOTER LOGO — Letter by letter scroll reveal (GLOBAL)
-// ─────────────────────────────────────────────
-const footerLogos = document.querySelectorAll("#footer-logo-svg");
-
-footerLogos.forEach((logo) => {
-    const letters = logo.querySelectorAll(".footer-letter");
-    
-    if (letters.length > 0) {
-        // Initial state set via GSAP
-        gsap.set(letters, { opacity: 0, y: 50 });
-
-        gsap.to(letters, {
-            opacity: 1,
-            y: 0,
-            stagger: 0.3,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: logo,      // Using the specific logo as trigger
-                start: "top bottom",
-                end: "bottom bottom",
-                scrub: 3,
-            }
-        });
-    }
-});
-
 

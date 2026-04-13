@@ -20,7 +20,7 @@ import image4 from "../assets/Images/image_4.png";
         <h2
             class="text-4xl md:text-5xl font-medium text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 mt-2 text-left lg:text-center w-full"
         >
-            Institutional Risk & Governance Framework
+            Institutional Risk & <span class="text-accent">Governance Framework </span>
         </h2>
         <p
             class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-center w-full lg:w-2/3"
@@ -72,7 +72,7 @@ import image4 from "../assets/Images/image_4.png";
         const initRiskPinnedAnimation = () => {
             const riskSection = document.querySelector("#risk");
             const headers = document.querySelectorAll("#risk h2, #risk p");
-            const cards = gsap.utils.toArray("#risk-cards > *");
+            const cards = gsap.utils.toArray<HTMLElement>("#risk-cards > *");
 
             if (!riskSection || cards.length === 0) return;
 

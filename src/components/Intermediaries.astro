@@ -12,7 +12,9 @@
         <!-- Left Column: Header + Form -->
         <div class="flex flex-col justify-between w-full lg:w-3/5 h-full gap-8">
             <!-- Header -->
-            <article class="w-full flex flex-col items-start justify-center gap-2 lg:gap-0">
+            <article
+                class="w-full flex flex-col items-start justify-center gap-2 lg:gap-0"
+            >
                 <h4
                     class="text-3xl md:text-4xl font-medium text-center lg:text-left text-black-900 uppercase font-bebas-neue leading-tight lg:leading-14"
                 >
@@ -27,7 +29,10 @@
             </article>
 
             <!-- Contact Form -->
-            <form id="intermediaries-form" class="w-full flex flex-col gap-5 p-6 bg-amber-200">
+            <form
+                id="intermediaries-form"
+                class="w-full h-full flex flex-col justify-between gap-5 p-6 bg-amber-200"
+            >
                 <div
                     class="flex flex-col lg:flex-row lg:items-center gap-1 lg:gap-4"
                 >
@@ -43,7 +48,7 @@
                         autocomplete="legal-name"
                         required
                         placeholder="Enter legal name..."
-                        class="bg-transparent border-b border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
+                        class="bg-transparent border-b-2 border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
                     />
                 </div>
                 <div
@@ -61,7 +66,7 @@
                         autocomplete="primary-contact"
                         required
                         placeholder="Enter primary contact name..."
-                        class="bg-transparent border-b border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
+                        class="bg-transparent border-b-2 border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
                     />
                 </div>
                 <div
@@ -79,7 +84,7 @@
                         autocomplete="business-email"
                         required
                         placeholder="Enter business email..."
-                        class="bg-transparent border-b border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
+                        class="bg-transparent border-b-2 border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
                     />
                 </div>
                 <div
@@ -97,11 +102,13 @@
                         autocomplete="phone-number"
                         required
                         placeholder="Enter phone number..."
-                        class="bg-transparent border-b border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
+                        class="bg-transparent border-b-2 border-black-900/30 text-black-900 placeholder-black-900/50 text-sm py-2 outline-none focus:border-black-900 transition-colors w-full"
                     />
                 </div>
                 <!-- Submit Button -->
-                <div class="flex justify-center w-full lg:w-fit lg:justify-end mt-2">
+                <div
+                    class="flex justify-center w-full lg:w-fit lg:justify-end mt-12"
+                >
                     <button
                         type="submit"
                         class="flex items-center justify-center gap-4 bg-black-900 text-accent py-3 px-8 w-full lg:w-fit hover:bg-gray-900 transition-colors duration-300"
@@ -183,79 +190,123 @@
 
 <!-- Reemplaza TU_SITE_KEY_PUBLICA con tu clave de sitio (Site Key) de reCAPTCHA v3 -->
 <!-- Normalmente en Astro puedes usar: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY -->
-<script is:inline src="https://www.google.com/recaptcha/api.js?render=6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O"></script>
+<script
+    is:inline
+    src="https://www.google.com/recaptcha/api.js?render=6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O"
+></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const form = document.querySelector("#intermediaries-form") as HTMLFormElement;
+        const form = document.querySelector(
+            "#intermediaries-form",
+        ) as HTMLFormElement;
 
         if (form) {
             form.addEventListener("submit", async (e) => {
                 e.preventDefault(); // Evitamos recarga de página
 
-                const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+                const submitBtn = form.querySelector(
+                    'button[type="submit"]',
+                ) as HTMLButtonElement;
                 const originalBtnText = submitBtn.innerHTML;
-                
+
                 // Estado de carga (opcional pero recomendado)
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="text-sm font-medium">Verifying...</span>';
+                submitBtn.innerHTML =
+                    '<span class="text-sm font-medium">Verifying...</span>';
 
                 try {
                     // @ts-ignore
-                    grecaptcha.ready(function() {
+                    grecaptcha.ready(function () {
                         // @ts-ignore - Reemplaza con tu clave pública
-                        grecaptcha.execute('6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O', {action: 'submit'}).then(async function(token: string) {
-                            
-                            // Recopilar los datos del formulario de manera segura
-                            const formData = new FormData(form);
-                            const formJSON = Object.fromEntries(formData.entries());
-                            
-                            // Enviar el token Y los datos al backend (PHP)
-                            try {
-                                // 👇 Aquí hacemos el Call al nuevo endpoint PHP
-                                // Asegúrate de ajustar la ruta si el PHP está en otro dominio o carpeta
-                                const response = await fetch('/api/procesar_formulario.php', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({
-                                        recaptcha: token,
-                                        data: formJSON
-                                    })
-                                });
+                        grecaptcha
+                            .execute(
+                                "6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O",
+                                { action: "submit" },
+                            )
+                            .then(async function (token: string) {
+                                // Recopilar los datos del formulario de manera segura
+                                const formData = new FormData(form);
+                                const formJSON = Object.fromEntries(
+                                    formData.entries(),
+                                );
 
-                                const result = await response.json();
+                                // Enviar el token Y los datos al backend (PHP)
+                                try {
+                                    // 👇 Aquí hacemos el Call al nuevo endpoint PHP
+                                    // Asegúrate de ajustar la ruta si el PHP está en otro dominio o carpeta
+                                    const response = await fetch(
+                                        "/api/procesar_formulario.php",
+                                        {
+                                            method: "POST",
+                                            headers: {
+                                                "Content-Type":
+                                                    "application/json",
+                                            },
+                                            body: JSON.stringify({
+                                                recaptcha: token,
+                                                data: formJSON,
+                                            }),
+                                        },
+                                    );
 
-                                if (response.ok && result.success) {
-                                    // ÉXITO: El backend validó que es humano y procesó los datos
-                                    submitBtn.innerHTML = '<span class="text-sm font-medium">Application Sent ✓</span>';
-                                    submitBtn.classList.replace('bg-black-900', 'bg-green-600');
-                                    submitBtn.classList.replace('text-accent', 'text-white');
-                                    form.reset();
-                                    
-                                    // Restaurar el botón después de 3 segundos
-                                    setTimeout(() => {
+                                    const result = await response.json();
+
+                                    if (response.ok && result.success) {
+                                        // ÉXITO: El backend validó que es humano y procesó los datos
+                                        submitBtn.innerHTML =
+                                            '<span class="text-sm font-medium">Application Sent ✓</span>';
+                                        submitBtn.classList.replace(
+                                            "bg-black-900",
+                                            "bg-green-600",
+                                        );
+                                        submitBtn.classList.replace(
+                                            "text-accent",
+                                            "text-white",
+                                        );
+                                        form.reset();
+
+                                        // Restaurar el botón después de 3 segundos
+                                        setTimeout(() => {
+                                            submitBtn.innerHTML =
+                                                originalBtnText;
+                                            submitBtn.classList.replace(
+                                                "bg-green-600",
+                                                "bg-black-900",
+                                            );
+                                            submitBtn.classList.replace(
+                                                "text-white",
+                                                "text-accent",
+                                            );
+                                            submitBtn.disabled = false;
+                                        }, 3000);
+                                    } else {
+                                        // ERROR: Probable bot o error de validación
+                                        alert(
+                                            "Security check failed or error occurred: " +
+                                                (result.message ||
+                                                    "Unknown error"),
+                                        );
                                         submitBtn.innerHTML = originalBtnText;
-                                        submitBtn.classList.replace('bg-green-600', 'bg-black-900');
-                                        submitBtn.classList.replace('text-white', 'text-accent');
                                         submitBtn.disabled = false;
-                                    }, 3000);
-                                    
-                                } else {
-                                    // ERROR: Probable bot o error de validación
-                                    alert("Security check failed or error occurred: " + (result.message || "Unknown error"));
+                                    }
+                                } catch (error) {
+                                    console.error(
+                                        "Error submitting form:",
+                                        error,
+                                    );
+                                    alert(
+                                        "Failed to connect to the server. Please try again.",
+                                    );
                                     submitBtn.innerHTML = originalBtnText;
                                     submitBtn.disabled = false;
                                 }
-                            } catch (error) {
-                                console.error("Error submitting form:", error);
-                                alert("Failed to connect to the server. Please try again.");
-                                submitBtn.innerHTML = originalBtnText;
-                                submitBtn.disabled = false;
-                            }
-                        });
+                            });
                     });
                 } catch (error) {
                     console.error("reCAPTCHA failed to load:", error);
-                    alert("reCAPTCHA failed to load. Please disable ad-blockers and try again.");
+                    alert(
+                        "reCAPTCHA failed to load. Please disable ad-blockers and try again.",
+                    );
                     submitBtn.innerHTML = originalBtnText;
                     submitBtn.disabled = false;
                 }
@@ -282,8 +333,8 @@
                 scrollTrigger: {
                     trigger: "#intermediaries",
                     start: "top 85%",
-                    toggleActions: "play none none reverse"
-                }
+                    toggleActions: "play none none reverse",
+                },
             });
 
             // Headers Reveal
@@ -296,8 +347,8 @@
                 scrollTrigger: {
                     trigger: "#intermediaries",
                     start: "top 80%",
-                    toggleActions: "play none none reverse"
-                }
+                    toggleActions: "play none none reverse",
+                },
             });
 
             // Form Fields Staggered Reveal
@@ -310,8 +361,8 @@
                 scrollTrigger: {
                     trigger: "#intermediaries-form",
                     start: "top 85%",
-                    toggleActions: "play none none reverse"
-                }
+                    toggleActions: "play none none reverse",
+                },
             });
 
             // Right-side Info Articles Sequence
@@ -324,8 +375,8 @@
                 scrollTrigger: {
                     trigger: "#intermediaries .lg\\:w-2\\/5",
                     start: "top 85%",
-                    toggleActions: "play none none reverse"
-                }
+                    toggleActions: "play none none reverse",
+                },
             });
         });
     });
