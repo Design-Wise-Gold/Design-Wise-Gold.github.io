@@ -1,12 +1,10 @@
 ---
 import video1 from "../assets/Videos/video_1.mp4";
-import video2 from "../assets/Videos/video_2.mp4";
-import video3 from "../assets/Videos/video_3.mp4";
 ---
 
 <header
   id="hero-header"
-  class="sticky top-0 z-0 flex flex-col lg:flex-row justify-center items-center h-auto min-h-dvh xl:h-auto px-4 md:px-8 gap-8 lg:gap-32 pt-16 pb-8 lg:py-24"
+  class="relative z-0 flex flex-col lg:flex-row justify-center items-center h-auto max-h-dvh xl:h-auto px-4 md:px-8 gap-8 lg:gap-44 pt-32 pb-8 lg:py-24"
 >
   <!-- Text content block -->
   <article
@@ -15,9 +13,8 @@ import video3 from "../assets/Videos/video_3.mp4";
   >
     <span
       id="hero-eyebrow"
-      class="text-gray-400 text-sm flex gap-2 items-center"
-      ><div class="w-2 h-2 bg-accent rounded-4xl"></div>INSTITUTIONAL BULLION
-      INFRASTRUCTURE</span
+      class="text-gray-400 text-sm flex gap-2 items-center uppercase"
+      ><div class="w-2 h-2 bg-accent rounded-4xl"></div>Become an approved intermediary</span
     >
     <h1
       id="hero-h1"
@@ -27,21 +24,22 @@ import video3 from "../assets/Videos/video_3.mp4";
         Professional Intermediaries</span
       >
     </h1>
-    <p
-      id="hero-p"
-      class="text-gray-300 my-3 text-sm md:text-base w-full lg:w-2/3"
-    >
+    <p id="hero-p" class="text-gray-300  text-sm md:text-base w-full">
       WiseGold Capital provides custody coordination, logistics, and transaction
       support through a global network of independent depositories and
-      counterparties. Designed for intermediaries seeking structured, compliant,
-      and scalable bullion solutions.
+      counterparties.
     </p>
+    <p id="hero-p2" class="text-gray-300 py-4 text-sm md:text-base w-full">
+      Designed for intermediaries seeking structured, compliant, and scalable
+      bullion solutions.
+    </p>
+
     <a
       id="hero-cta"
       href="#intermediaries"
       class="hover:group flex items-center justify-between px-4 h-[50px] py-2 hover:bg-gray-900 hover:text-accent w-full md:w-fit md:gap-2 border-gray-500 border-2 hover:border-accent hover:border-2"
     >
-      <span class="group-hover:text-accent text-white-700 text-xs md:text-base"
+      <span class="group-hover:text-accent text-white-700 text-sm md:text-base"
         >Request Platform Access</span
       >
       <svg
@@ -65,7 +63,7 @@ import video3 from "../assets/Videos/video_3.mp4";
   <!-- Right article: video + cards -->
   <article
     id="hero-right"
-    class="relative z-10 w-full lg:w-2/3 h-auto gap-8 flex flex-col"
+    class="relative z-10 w-full lg:w-2/3 h-full gap-4 flex flex-col"
   >
     <span
       id="hero-right-label"
@@ -83,23 +81,18 @@ import video3 from "../assets/Videos/video_3.mp4";
     ></video>
     <div
       id="hero-card-1"
-      class="border border-gray-500 rounded-4xl p-4 gap-4 hidden md:flex md:justify-between lg:justify-start hover:bg-gray-900"
+      class="border border-gray-500 rounded-2xl p-4 gap-4 hidden md:flex md:justify-between lg:justify-start hover:bg-gray-900"
     >
       <p class="flex flex-col text-white-700 text-sm gap-3">
-        A Structured Approach to Bullion Ownership and Custody<span class="text-gray-400 text-sm"
-          >Client ownership is supported through independent custody arrangements, jurisdictional diversification, and operational infrastructure designed for long-term capital preservation.</span
+        A Structured Approach to Bullion Ownership and Custody<span
+          class="text-gray-400 text-sm"
+          >Client ownership is supported through independent custody
+          arrangements, jurisdictional diversification, and operational
+          infrastructure designed for long-term capital preservation.</span
         >
       </p>
-      <video
-        src={video2}
-        autoplay
-        muted
-        loop
-        playsinline
-        class="w-20 md:w-auto lg:w-20 h-20 md:h-30 lg:h-40 object-cover rounded-2xl"
-      ></video>
     </div>
-    <!-- <div
+    <div
       id="hero-card-2"
       class="border border-gray-500 rounded-2xl p-4 hidden md:flex md:justify-between lg:justify-start hover:bg-gray-900"
     >
@@ -108,14 +101,6 @@ import video3 from "../assets/Videos/video_3.mp4";
           >Account-level segregation, independent vaults, and AML/CTF controls</span
         >
       </p>
-      <video
-        src={video3}
-        autoplay
-        muted
-        loop
-        playsinline
-        class="w-20 h-20 object-cover rounded-lg md:w-auto md:h-30 lg:w-20 lg:h-20"
-      ></video>
-    </div> -->
+    </div>
   </article>
 </header>

@@ -1,11 +1,10 @@
 ---
-import logotipo from "../assets/Logos/Logotipo_WiseGold_TM.svg";
 import linkedin from "../assets/Logos/linkedin_logo.svg";
 import x from "../assets/Logos/x_logo.svg";
 import instagram from "../assets/Logos/instagram_logo.svg";
 import facebook from "../assets/Logos/facebook_logo.svg";
 import youtube from "../assets/Logos/youtube_logo.svg";
-import Item__menu from "./item__menu.astro";
+import Item__menu from "./molecules/item__menu.astro";
 
 const { class: className } = Astro.props;
 ---
@@ -76,20 +75,29 @@ const { class: className } = Astro.props;
             exclusively through approved professional intermediaries
         </p>
     </section>
-    <section class="w-1/2 h-auto object-cover flex flex-col gap-12">
-        <article class="flex flex-col gap-4">
-            <p class="text-white-700 text-sm text-center lg:text-right">
-                Pages
-            </p>
-            <ul class="flex flex-col items-center lg:items-end">
-                <Item__menu title="Home" link="/" />
-                <Item__menu title="Ecosystem" link="#ecosystem" />
-                <Item__menu title="Custody & Segregation" link="#custody" />
-                <Item__menu title="Risk & Governance" link="#risk" />
-                <Item__menu title="Global Network" link="#global" />
-                <Item__menu title="For Intermediaries" link="#intermediaries" />
-                <Item__menu class="menu-item" title="Blog" link="/blog" />
-            </ul>
+    <section class="w-1/2 h-auto object-cover flex flex-col gap-8">
+        <article class="flex flex-col  gap-4">
+            <div class="flex flex-col gap-2">
+                <p class="text-white-700 text-sm text-center lg:text-right">
+                    Pages
+                </p>
+                <ul class="flex flex-col items-center lg:items-end">
+                    <Item__menu title="Home" link="/" />
+                    <Item__menu title="Ecosystem" link="#ecosystem" />
+                    <Item__menu title="Custody & Segregation" link="#custody" />
+                    <Item__menu title="Risk & Governance" link="#risk" />
+                    <Item__menu title="Global Network" link="#global" />
+                    <Item__menu title="For Intermediaries" link="#intermediaries"/>
+                    <Item__menu class="menu-item" title="Blog" link="/blog" />
+                </ul>
+                <p class="text-white-700 text-sm text-center lg:text-right">
+                    Legal
+                </p>
+                <ul class="flex flex-col items-center lg:items-end">
+                    <Item__menu title="Terms and Conditions" link="/terms" />
+                    <Item__menu title="Privacy Policy" link="/privacy" />
+                </ul>
+            </div>
         </article>
         <article
             class="flex flex-col w-full gap-4 justify-center lg:justify-end"

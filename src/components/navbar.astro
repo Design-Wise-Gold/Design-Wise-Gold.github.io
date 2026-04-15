@@ -1,6 +1,6 @@
 ---
 import logotipo from "../assets/Logos/logotipo__wisegGold.svg";
-import Item__menu from "./item__menu.astro";
+import Item__menu from "./molecules/item__menu.astro";
 ---
 
 <!-- Full-screen logo splash overlay -->
@@ -24,7 +24,7 @@ import Item__menu from "./item__menu.astro";
 
 <nav
     id="navbar"
-    class="flex fixed left-0 right-0 justify-between items-center h-auto w-full border-solid border-gray-500 border-b-[0.2px] bg-black-900 z-50 top-0"
+    class="flex fixed left-0 right-0 justify-between items-center h-auto w-full border-solid border-gray-500 border-b-[0.2px] bg-black-900 z-50 top-0 pr-4 lg:pr-0 max-w-[1920px] mx-auto"
 >
     <a id="logo-link" href="/" class="border-r-0 lg:border-r-[0.2px] border-gray-500">
         <img
@@ -37,7 +37,7 @@ import Item__menu from "./item__menu.astro";
 
     <ul id="menu-desktop" class="hidden lg:flex gap-6">
         <Item__menu class="menu-item" title="Ecosystem" link="/#ecosystem" />
-        <Item__menu class="menu-item" title="Custody & Segregation" link="/#custody" />
+        <Item__menu class="menu-item" title="Custody & Structure" link="/#custody" />
         <Item__menu class="menu-item" title="Risk & Governance" link="/#risk" />
         <Item__menu class="menu-item" title="Global Network" link="/#global" />
         <Item__menu class="menu-item" title="For Intermediaries" link="/#intermediaries" />
@@ -73,7 +73,7 @@ import Item__menu from "./item__menu.astro";
         aria-expanded="false"
         class="flex w-auto pl-4 pr-6 h-auto justify-center items-center lg:hidden"
     >
-        <div class="relative w-7 h-4">
+        <div class="relative w-auto h-auto">
             <span id="burger-line-1" class="absolute top-1/2 left-0 -translate-y-1/2 w-7 h-[3px] bg-gray-300 rounded-full"></span>
             <span id="burger-line-2" class="absolute top-1/2 left-0 -translate-y-1/2 w-7 h-[3px] bg-gray-300 rounded-full"></span>
         </div>
@@ -163,3 +163,217 @@ import Item__menu from "./item__menu.astro";
     </div>-->
     <p class="text-gray-300 text-sm px-6">We are currently in our development stage, preparing to <span class="text-accent">launch in September 2026</span>. This deliberate timeline allows us to refine compliance, strengthen banking relationships, and build a foundation that is as resilient as it is transparent.</p>
 </div>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ─────────────────────────────────────────────
+    // INTRO CINEMATIC — Splash logo → navbar → hero
+    // ─────────────────────────────────────────────
+    function playIntro() {
+        const splash        = document.querySelector("#logo-splash");
+        const splashSvg     = document.querySelector("#logo-splash-svg");
+        const splashLetters = document.querySelectorAll(".splash-letter");
+        const logoTop       = document.querySelector("#logo__top");
+        const logoLink      = document.querySelector("#logo-link");
+
+        // Estado inicial oculto de todos los actores
+        gsap.set("#navbar",            { y: -60, opacity: 0 });
+        gsap.set("#menu-desktop",      { opacity: 0 });
+        gsap.set(".menu-item",         { opacity: 0, y: -100 });
+        gsap.set("#portal-toggle",     { opacity: 0, x: 20 });
+        gsap.set("#hero-eyebrow",      { opacity: 0, y: 12 });
+        gsap.set("#hero-h1",           { opacity: 0, y: 40, skewY: 2 });
+        gsap.set("#hero-p",            { opacity: 0, y: 20 });
+        gsap.set("#hero-p2",           { opacity: 0, y: 20 });
+        gsap.set("#hero-cta",          { opacity: 0, y: 16 });
+        gsap.set("#hero-right-label",  { opacity: 0, x: 30 });
+        gsap.set("#hero-video-main",   { opacity: 0, scale: 0.96, y: 24 });
+        gsap.set("#hero-card-1",       { opacity: 0, x: 40 });
+        gsap.set("#hero-card-2",       { opacity: 0, x: 40 });
+        gsap.set("#recaptcha-notice",  { opacity: 0, y: 20 });
+
+        const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+        if (splashSvg && splashLetters.length > 0) {
+            gsap.set(splashSvg, { opacity: 1, scale: 0.4 });
+            gsap.set(splashLetters, { opacity: 0, y: 10 });
+
+            tl
+                .to(splashLetters, {
+                    keyframes: [
+                        { opacity: 1, y: -8, fill: "#FAD906", duration: 0.4, ease: "power2.out" },
+                        { y: 0, fill: "#F2F4FF", duration: 0.4, ease: "power2.inOut" }
+                    ],
+                    stagger: 0.08,
+                })
+                .to(splashSvg, { duration: 0.3 })
+                .to(splashSvg, { opacity: 0, scale: 1.2, duration: 0.6, ease: "power2.inOut" })
+                .to(splash, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut",
+                    onComplete: () => { if (splash) (splash as HTMLElement).style.display = "none"; }
+                }, "-=0.3");
+        } else {
+            tl.to(splash, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => { if (splash) (splash as HTMLElement).style.display = "none"; }
+            });
+        }
+
+        tl
+            .to("#navbar",       { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.3")
+            .to("#menu-desktop", { opacity: 1, duration: 0.5, ease: "power2.out" },       "-=0.4")
+            .to(".menu-item",    { opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.2 }, "-=0.4")
+            .to("#portal-toggle",{ opacity: 1, x: 0, duration: 0.6 },                    "-=0.4")
+            .to("#hero-eyebrow", { opacity: 1, y: 0, duration: 0.6 },                    "-=0.2")
+            .to("#hero-h1",      { opacity: 1, y: 0, skewY: 0, duration: 0.9, ease: "expo.out" }, "-=0.4")
+            .to("#hero-p",       { opacity: 1, y: 0, duration: 0.6 },                    "-=0.5")
+            .to("#hero-p2",      { opacity: 1, y: 0, duration: 0.6 },                    "-=0.5")
+            .to("#hero-cta",     { opacity: 1, y: 0, duration: 0.55 },                   "-=0.4")
+            .to("#hero-right-label", { opacity: 1, x: 0, duration: 0.55 },              "-=0.5")
+            .to("#hero-video-main",  { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "expo.out" }, "-=0.4")
+            .to("#hero-card-1",      { opacity: 1, x: 0, duration: 0.6 },               "-=0.55")
+            .to("#hero-card-2",      { opacity: 1, x: 0, duration: 0.6 },               "-=0.45")
+            .to("#recaptcha-notice", { opacity: 1, y: 0, duration: 0.6 },               "-=0.45");
+
+        if (logoLink && logoTop) {
+            logoLink.addEventListener("mouseenter", () => gsap.to(logoTop, { duration: 0.3, ease: "power2.out" }));
+            logoLink.addEventListener("mouseleave", () => gsap.to(logoTop, { duration: 0.3, ease: "power2.out" }));
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", playIntro);
+
+    // ─────────────────────────────────────────────
+    // NAVBAR — Hide on scroll down, show on scroll up
+    // ─────────────────────────────────────────────
+    const navbar = document.querySelector("#navbar");
+
+    if (navbar) {
+        ScrollTrigger.create({
+            start: "top -80",
+            end: 99999,
+            onUpdate: (self) => {
+                if (self.direction === 1) {
+                    gsap.to(navbar, { y: -100, duration: 0.4, ease: "power2.out" });
+                } else {
+                    gsap.to(navbar, { y: 0, duration: 0.5, ease: "power2.out" });
+                }
+            }
+        });
+    }
+
+    // ─────────────────────────────────────────────
+    // ACCESS PORTAL PANEL — slide in from right
+    // ─────────────────────────────────────────────
+    const portalToggle = document.querySelector("#portal-toggle");
+    const portalPanel  = document.querySelector("#portal-panel") as HTMLElement | null;
+    const portalClose  = document.querySelector("#portal-close");
+
+    let portalOpen = false;
+
+    function openPortal() {
+        if (!portalPanel) return;
+        portalOpen = true;
+        portalPanel.style.pointerEvents = "auto";
+        gsap.fromTo(portalPanel, { x: "100%" }, { x: "0%", duration: 0.55, ease: "power4.out" });
+    }
+
+    function closePortal() {
+        if (!portalPanel) return;
+        portalOpen = false;
+        gsap.to(portalPanel, {
+            x: "100%",
+            duration: 0.4,
+            ease: "power4.in",
+            onComplete: () => { if (portalPanel) portalPanel.style.pointerEvents = "none"; }
+        });
+    }
+
+    if (portalToggle && portalPanel) {
+        portalToggle.addEventListener("click", () => portalOpen ? closePortal() : openPortal());
+    }
+    if (portalClose) {
+        portalClose.addEventListener("click", closePortal);
+    }
+
+    // ─────────────────────────────────────────────
+    // MOBILE MENU — Toggle with GSAP animation
+    // ─────────────────────────────────────────────
+    const menuToggle = document.querySelector("#menu-toggle");
+    const mobileMenu = document.querySelector("#mobile-menu") as HTMLElement | null;
+    const menuItems  = document.querySelectorAll(".mobile-menu-item");
+    const menuCta    = document.querySelector(".mobile-menu-cta");
+    const line1      = document.querySelector("#burger-line-1");
+    const line2      = document.querySelector("#burger-line-2");
+
+    if (line1 && line2) {
+        gsap.set(line1, { y: -5 });
+        gsap.set(line2, { y:  5 });
+    }
+
+    let menuOpen = false;
+
+    const menuTl = gsap.timeline({ paused: true });
+
+    menuTl
+        .to(mobileMenu, {
+            clipPath: "inset(0 0 0% 0)",
+            duration: 0.6,
+            ease: "power4.inOut",
+            pointerEvents: "auto",
+            onStart: () => { if (mobileMenu) mobileMenu.style.pointerEvents = "auto"; },
+        })
+        .fromTo(
+            menuItems,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, stagger: 0.07, duration: 0.45, ease: "power3.out" },
+            "-=0.25"
+        )
+        .fromTo(
+            menuCta,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+            "-=0.15"
+        );
+
+    function openMenu() {
+        menuOpen = true;
+        menuToggle?.setAttribute("aria-expanded", "true");
+        document.body.style.overflow = "hidden";
+        gsap.to(line1, { y: 0, rotate: 45,  duration: 0.35, ease: "power2.inOut" });
+        gsap.to(line2, { y: 0, rotate: -45, duration: 0.35, ease: "power2.inOut" });
+        menuTl.play();
+    }
+
+    function closeMenu() {
+        menuOpen = false;
+        menuToggle?.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+        gsap.to(line1, { rotate: 0, y: -5, duration: 0.3, ease: "power2.inOut" });
+        gsap.to(line2, { rotate: 0, y:  5, duration: 0.3, ease: "power2.inOut" });
+        gsap.to(mobileMenu, {
+            clipPath: "inset(0 0 100% 0)",
+            duration: 0.5,
+            ease: "power4.inOut",
+            onComplete: () => {
+                if (mobileMenu) mobileMenu.style.pointerEvents = "none";
+                menuTl.pause(0);
+            },
+        });
+    }
+
+    if (menuToggle) {
+        menuToggle.addEventListener("click", () => menuOpen ? closeMenu() : openMenu());
+    }
+
+    document.querySelectorAll(".mobile-menu-link").forEach((link) => {
+        link.addEventListener("click", () => { if (menuOpen) closeMenu(); });
+    });
+</script>

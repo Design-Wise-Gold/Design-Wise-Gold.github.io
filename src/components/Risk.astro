@@ -1,5 +1,5 @@
 ---
-import Card__Risk from "./card__risk.astro";
+import Card__Risk from "./molecules/card__risk.astro";
 import icon1 from "../assets/Icons/icon_1.svg";
 import icon2 from "../assets/Icons/icon_2.svg";
 import icon3 from "../assets/Icons/icon_3.svg";
@@ -12,7 +12,7 @@ import image4 from "../assets/Images/image_4.png";
 
 <section
     id="risk"
-    class="relative z-20 flex flex-col items-center justify-center h-full lg:py-24 w-full pt-8 pb-10 gap-6 bg-black-900"
+    class="relative z-20 flex flex-col items-center justify-center h-full lg:py-24 w-full pt-8 pb-10 gap-6 bg-black-900 lg:-mt-[100vh]"
 >
     <article
         class="w-full h-auto flex flex-col items-center justify-center gap-2 px-4"
@@ -20,7 +20,9 @@ import image4 from "../assets/Images/image_4.png";
         <h2
             class="text-4xl md:text-5xl font-medium text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 mt-2 text-left lg:text-center w-full"
         >
-            Institutional Risk & <span class="text-accent">Governance Framework </span>
+            Institutional Risk & <span class="text-accent"
+                >Governance Framework
+            </span>
         </h2>
         <p
             class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-center w-full lg:w-2/3"
@@ -72,59 +74,55 @@ import image4 from "../assets/Images/image_4.png";
         const initRiskPinnedAnimation = () => {
             const riskSection = document.querySelector("#risk");
             const headers = document.querySelectorAll("#risk h2, #risk p");
-            const cards = gsap.utils.toArray<HTMLElement>("#risk-cards > *");
+            const cards = gsap.utils.toArray("#risk-cards > *");
 
             if (!riskSection || cards.length === 0) return;
 
-            // Create a single unified pinned timeline for the whole section
+            // Headers enter early to fill the gap
+            gsap.fromTo(
+                headers,
+                { opacity: 0, y: 50 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    stagger: 0.1,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: riskSection,
+                        start: "top 95%",
+                        toggleActions: "play none none reverse",
+                    },
+                },
+            );
+
+            // Cards follow sequentially with pinning
             const mainTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: riskSection,
                     start: "top top",
-                    pin: true,     // Section stays pinned while cards reveal
-                    scrub: 1,      // Tied to scroll progress
-                    invalidateOnRefresh: true
-                }
+                    pin: true,
+                    scrub: 1,
+                    invalidateOnRefresh: true,
+                },
             });
 
-            // PHASE 1: Headers entrance (0 to 0.5)
-            mainTl.fromTo(headers, 
-                { opacity: 0, y: 30 },
-                { opacity: 1, y: 0, stagger: 0.1, duration: 0.5, ease: "power2.out" },
-                0
-            );
-
-            // PHASE 2: Sequential Card Reveal (One by One)
-            // We use overlapping labels/offsets to ensure a "one by one" wave
             cards.forEach((card, i) => {
-                const startTime = 0.4 + (i * 0.4); // Staggered start times
-                
-                mainTl.fromTo(card,
-                    { 
-                        opacity: 0, 
-                        y: 150 // Deep offset for parallax arrival
-                    },
-                    { 
-                        opacity: 1, 
-                        y: 0, 
-                        duration: 0.6,
-                        ease: "power2.out" 
-                    },
-                    startTime
+                const startTime = i * 0.4;
+                mainTl.fromTo(
+                    card,
+                    { opacity: 0, y: 100 },
+                    { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+                    startTime,
                 );
             });
 
-            // PHASE 3: Brief hold at the end for the last card (to avoid cutting off)
-            mainTl.to({}, { duration: 0.5 }); // Final pause at 100% visible
-
+            mainTl.to({}, { duration: 0.5 });
             ScrollTrigger.refresh();
         };
 
         initRiskPinnedAnimation();
-        
-        // Safety refresh for complex layouts
         window.addEventListener("load", () => ScrollTrigger.refresh());
         setTimeout(() => ScrollTrigger.refresh(), 1000);
     });
 </script>
-

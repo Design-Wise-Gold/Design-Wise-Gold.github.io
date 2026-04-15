@@ -1,5 +1,5 @@
 ---
-import Card__ecosystem from "./card__ecosystem.astro";
+import Card__ecosystem from "./molecules/card__ecosystem.astro";
 import video4 from "../assets/Videos/video_4.mp4";
 import video5 from "../assets/Videos/video_5.mp4";
 import video6 from "../assets/Videos/video_6.mp4";
@@ -8,49 +8,142 @@ import video7 from "../assets/Videos/video_7.mp4";
 
 <section
     id="ecosystem"
-    class="bg-black-900 flex flex-col-reverse lg:flex-row items-start lg:items-center justify-center h-auto lg:min-h-dvh w-full border-solid border-gray-500 border-t-[0.2px]  gap-4 lg:gap-8 lg:py-12 relative z-10"
+    class="bg-black-900 flex flex-col-reverse items-start lg:items-center justify-center h-auto max-h-dvh xl:h-auto w-full border-solid border-gray-500 border-t-[0.2px]  gap-4 lg:gap-8 lg:py-12 relative z-10"
 >
     <article
         id="ecosystem-left"
-        class="w-full lg:w-1/2 grid items-center lg:*:col-start-1 lg:*:row-start-1 relative lg:min-h-[500px] gap-4 lg:gap-0"
+        class="w-full lg:w-full grid grid-cols-1 lg:grid-cols-4 items-center relative gap-4 px-4"
     >
         <Card__ecosystem
             title="Advisory"
-            description="Strategic guidance supporting intermediaries in structuring bullion holdings across jurisdictions, inventory models, and client objectives"
-            video={video4}
+            description="Strategic guidance supporting intermediaries in structuring bullion holdings across jurisdictions, inventory models, and client objectives."
+            video={video7}
         />
         <Card__ecosystem
             title="Vault"
-            description="Coordination of custody through independent depositories, supported by account-level records, logistics, and reporting systems"
+            description="Coordination of custody through independent depositories, supported by account-level records, logistics, and advanced reporting systems."
             video={video5}
         />
         <Card__ecosystem
             title="Technology"
-            description="Operational infrastructure enabling onboarding, reporting, reconciliation, and system-based control of bullion positions"
+            description="Operational infrastructure enabling onboarding, reporting, and reconciliation, providing system-based control and transparency of bullion positions."
             video={video6}
         />
         <Card__ecosystem
             title="Proprietary Trading"
-            description="Proprietary trading activities, where conducted, are undertaken solely for the account of WiseGold Capital, LLC and form part of its internal treasury operations. This division supports liquidity within the platform’s ecosystem and operates independently of client-related functions. Such activities do not involve, reference, or rely upon client assets, custody holdings, or inventory positions"
-            video={video7}
+            description="Internal trading operations supporting ecosystem liquidity, conducted solely for WiseGold Capital’s account without relying on client-held assets."
+            video={video4}
         />
     </article>
     <article
         id="ecosystem-right"
-        class="w-full lg:w-1/2 h-auto pt-3 flex flex-col items-center lg:items-right px-4 justify-end "
+        class="w-full lg:w-full h-auto pt-3 flex flex-col items-center lg:items-end px-4 justify-end "
     >
         <h2
             id="eco-h2"
             class="text-4xl md:text-5xl font-medium text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 mt-2 text-left lg:text-right w-full"
         >
-            The WiseGold Platform<br />
+            An integrated Platform<br />
             <span class="text-accent">Ecosystem Architecture</span>
         </h2>
         <p
             id="eco-p"
-            class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-right w-full"
+            class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-right w-full lg:w-1/2"
         >
-            WiseGold Capital operates as a unified platform with four internal divisions
+            A unified ecosystem encompassing advisory, independent vault
+            coordination, technology, and proprietary trading. Engineered
+            exclusively for capital preservation and institutional continuity.
         </p>
     </article>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ─────────────────────────────────────────────
+    // HERO EXIT & ECOSYSTEM ENTRANCE — Cinematic Scroll
+    // ─────────────────────────────────────────────
+    // ─────────────────────────────────────────────
+    // HERO EXIT & ECOSYSTEM ENTRANCE — Cinematic Scroll Overlap
+    // ─────────────────────────────────────────────
+    const heroHeader = document.querySelector("#hero-header");
+    const ecosystemSection = document.querySelector("#ecosystem");
+
+    if (heroHeader && ecosystemSection) {
+        
+        // 1. Pin the Hero in place so Ecosystem can slide over it
+        ScrollTrigger.create({
+            trigger: heroHeader,
+            start: "top top",
+            pin: true,
+            pinSpacing: false, // Essential for overlap
+        });
+
+        // 2. Hero Exit Animations (Text & Cards fading/moving while being covered)
+        const tlHeroExit = gsap.timeline({
+            scrollTrigger: {
+                trigger: heroHeader,
+                start: "top top",
+                end: "bottom top", 
+                scrub: 1,
+            }
+        });
+
+        
+        // 3. Ecosystem Cinematic Entrance
+        const ecoCards = gsap.utils.toArray("#ecosystem-left > *");
+
+       
+        gsap.set(ecoCards, { opacity: 0, y: 100 });
+
+       
+
+        const mm = gsap.matchMedia();
+
+        mm.add("(min-width: 1024px)", () => {
+            gsap.set(ecoCards, { opacity: 0, y: 40 });
+
+            const tlEcosystem = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ecosystemSection,
+                    start: "top top",
+                  
+                    pin: true,
+                    scrub: 1,
+                }
+            });
+
+            (ecoCards as Element[]).forEach((card, i) => {
+                tlEcosystem.to(card, { 
+                    opacity: 1, 
+                    y: 0, 
+                    duration: 1, 
+                    ease: "power2.out" 
+                });
+                if (i !== ecoCards.length - 1) {
+                    tlEcosystem.to({}, { duration: 0.5 });
+                }
+            });
+        });
+
+        mm.add("(max-width: 1023px)", () => {
+            gsap.set(ecoCards, { opacity: 0, y: 50 });
+            (ecoCards as Element[]).forEach((card) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 95%",
+                        end: "center center",
+                        scrub: 2,
+                    }
+                });
+            });
+        });
+    }
+</script>

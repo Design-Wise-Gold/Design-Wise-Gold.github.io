@@ -25,7 +25,6 @@ import "../styles/global.css";
 		<!-- Gold bullion particle canvas — full page -->
 		<canvas id="gold-matrix" class="fixed inset-0 w-full h-full pointer-events-none z-100" style="opacity:0.30"></canvas>
 		<slot />
-		<script src="../scripts/animations.js"></script>
 	</body>
 </html>
 
@@ -234,19 +233,20 @@ import "../styles/global.css";
 	html {
 		margin: 0;
 		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
 		background-color: var(--color-black-900);
 		box-sizing: border-box;
 		font-family: var(--font-urbanist);
-    scroll-behavior: smooth;
-    
+		scroll-behavior: smooth;
 	}
 
 	body {
 		margin: 0 auto;
 		width: 100%;
 		max-width: 1920px;
+		overflow-x: hidden;
 		box-sizing: border-box;
 		font-family: var(--font-urbanist);
-		
 	}
 </style>
