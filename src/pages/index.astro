@@ -2,6 +2,7 @@
 import Hero from '../components/Hero.astro';
 import Ecosystem from '../components/Ecosystem.astro';
 import Custody from '../components/Custody.astro';
+import Model from '../components/Model.astro';
 import Risk from '../components/Risk.astro';
 import Global from '../components/Global.astro';
 import Intermediaries from '../components/Intermediaries.astro';
@@ -11,13 +12,14 @@ import Navbar from '../components/navbar.astro';
 import RecaptchaNotice from '../components/molecules/RecaptchaNotice.astro';  
 ---
 
-<Layout class="max-w-fit">
+<Layout class="max-w-fit ">
     <Navbar />
 	<main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
 		<Hero />
 		<Ecosystem />
 		<Custody />
 		<Risk />
+		<Model />
 		<Global />
 	</main>
 	<Intermediaries />

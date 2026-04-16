@@ -8,7 +8,7 @@ import video7 from "../assets/Videos/video_7.mp4";
 
 <section
     id="ecosystem"
-    class="bg-black-900 flex flex-col-reverse items-start lg:items-center justify-center h-auto max-h-dvh xl:h-auto w-full border-solid border-gray-500 border-t-[0.2px]  gap-4 lg:gap-8 lg:py-12 relative z-10"
+    class="bg-black-900 z-10 relative flex flex-col-reverse items-start lg:items-center justify-center h-auto lg:max-h-screen xl:h-auto w-full border-solid border-gray-500 border-t-[0.2px]  gap-4 lg:gap-8 lg:py-12"
 >
     <article
         id="ecosystem-left"
@@ -27,12 +27,12 @@ import video7 from "../assets/Videos/video_7.mp4";
         <Card__ecosystem
             title="Technology"
             description="Operational infrastructure enabling onboarding, reporting, and reconciliation, providing system-based control and transparency of bullion positions."
-            video={video6}
+            video={video4}
         />
         <Card__ecosystem
             title="Proprietary Trading"
             description="Internal trading operations supporting ecosystem liquidity, conducted solely for WiseGold Capital’s account without relying on client-held assets."
-            video={video4}
+            video={video6}
         />
     </article>
     <article
@@ -63,12 +63,8 @@ import video7 from "../assets/Videos/video_7.mp4";
 
     gsap.registerPlugin(ScrollTrigger);
 
-    // ─────────────────────────────────────────────
-    // HERO EXIT & ECOSYSTEM ENTRANCE — Cinematic Scroll
-    // ─────────────────────────────────────────────
-    // ─────────────────────────────────────────────
-    // HERO EXIT & ECOSYSTEM ENTRANCE — Cinematic Scroll Overlap
-    // ─────────────────────────────────────────────
+    
+   
     const heroHeader = document.querySelector("#hero-header");
     const ecosystemSection = document.querySelector("#ecosystem");
 

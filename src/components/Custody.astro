@@ -3,18 +3,11 @@ import video from "../assets/Videos/custody.mp4";
 ---
 
 <section
-    id="custody-trigger"
-    class="w-full relative h-[250vh]"
->
-    <div
-        id="custody"
-        class="sticky top-0 w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-black-900"
-    >
-        <div
-            class="custody-content flex flex-col items-center justify-center w-full h-full gap-6 px-4"
-        >
+    id="custody"
+    class="flex flex-col lg:flex-row gap-8 w-full px-4 py-10 lg:py-40 max-h-dvh"
+>    
             <article
-                class="custody-text w-full flex flex-col lg:flex-row items-center justify-between gap-8"
+                class="custody-text w-full h-auto flex flex-col items-center justify-between gap-8"
             >
                 <div class="flex flex-col items-left justify-center gap-2 w-full h-auto">
                     <h2
@@ -30,7 +23,7 @@ import video from "../assets/Videos/custody.mp4";
                         independent, approved depositories in recognized jurisdictions.
                     </p>
                 </div>
-                <ul class="flex flex-col gap-4 text-sm items-left w-full">
+                <ul class="flex flex-col gap-4 text-sm items-left w-full h-auto">
                     <li class="flex items-center gap-3 text-gray-400 group">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +85,7 @@ import video from "../assets/Videos/custody.mp4";
                 </ul>
             </article>
             <article
-                class=" w-full h-96 md:h-[55vh] overflow-hidden shadow-2xl relative z-10 p-0 m-0"
+                class="custody-video w-full h-full lg:h-auto"
             >
                 <video
                     src={video}
@@ -100,12 +93,11 @@ import video from "../assets/Videos/custody.mp4";
                     muted
                     loop
                     playsinline
-                    class="custody-video w-full h-full object-cover opacity-100"
+                    class=" w-full h-full object-cover"
                 >
                 </video>
             </article>
-        </div>
-    </div>
+        
 </section>
 
 <script>
@@ -114,65 +106,34 @@ import video from "../assets/Videos/custody.mp4";
 
     gsap.registerPlugin(ScrollTrigger);
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const trigger = document.querySelector("#custody-trigger");
-        if (!trigger) return;
+    gsap.to(".custody-text", {
+        y: -100,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".custody-text",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+        }
+        
 
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: trigger,
-                start: "top top",
-                end: "bottom bottom",
-                scrub: true,
-            },
-        });
-
-        // Use more specific selectors and force growth
-        tl.to("#custody .custody-text", {
-            opacity: 0,
-            y: -50,
-            height: 0,
-            padding: 0,
-            margin: 0,
-            duration: 1,
-            ease: "none",
-        }, 0);
-
-        tl.to("#custody .custody-content", {
-            gap: "0rem",
-            px: 0,
-            maxHeight: "100vh",
-            duration: 1,
-            ease: "none",
-        }, 0);
-
-        tl.to("#custody .custody-video-wrapper", {
-            height: "100vh",
-            width: "100vw",
-            left: "50%",
-            xPercent: -50,
-            position: "absolute",
-            top: 0,
-            borderRadius: "0px",
-            duration: 1,
-            ease: "none",
-        }, 0);
-
-        // Linger phase
-        tl.to({}, { duration: 1 });
-
-        // Phase out as Risk covers
-        tl.to("#custody .custody-video", {
-            opacity: 0.5,
-            duration: 1,
-            ease: "none",
-        }, 2);
-
-        tl.to("#custody", {
-            opacity: 0,
-            scale: 0.98,
-            duration: 1,
-            ease: "none",
-        }, 2);
     });
+
+    gsap.to(".custody-video", {
+        y: -100,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+        scrollTrigger: {
+            trigger: ".custody-video",
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1,
+        }
+
+    });
+
+    
 </script>
