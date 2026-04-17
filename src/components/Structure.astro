@@ -1,0 +1,55 @@
+---
+import Card__Structure from "./molecules/card__structure.astro";
+---
+
+<section
+    id="structure"
+    class="flex flex-col items-center justify-center h-full lg:py-24 w-full pt-8 pb-10 gap-6 bg-black-900"
+>
+    <article
+        class="w-full h-auto flex flex-col items-center justify-center gap-2 px-4"
+    >
+        <h2
+            class="text-4xl md:text-5xl font-medium text-white-700 uppercase font-bebas-neue leading-tight lg:leading-14 mt-2 text-left lg:text-center w-full"
+        >
+            Operational Structure & 
+
+            <span class="text-accent">Financial Integrity Framework</span>
+        </h2>
+        <p
+            class="text-gray-300 lg:mt-3 text-sm md:text-base text-left lg:text-center w-full lg:w-2/3"
+        >
+            WiseGold Capital operates through a transparent, non-custodial model where client funds are routed via approved counterparties, while financing is offered through independent entities without assuming lender risk. This structure eliminates balance sheet exposure and discretionary control, ensuring operational integrity and clear asset separation.
+        </p>
+    </article>
+    <article
+        id="model-cards"
+        class="w-full flex flex-col lg:flex-row items-end px-4 justify-center gap-4 lg:min-h-[400px]"
+    >
+        <Card__Structure
+            title="Assigned Inventory"
+            description="Client-directed holdings with product, jurisdiction, and vault specificity."
+            item1="Direct association with specific bullion products"
+            item2="Maximum control and transparency"
+            item3="Suitable for clients requiring precise allocation"
+            item4="Ideal for investors prioritizing customization"
+        />
+        <Card__Structure
+            title="Consolidated Inventory"
+            description="System-managed allocation designed for efficiency and diversification."
+            item1="Ownership recorded at the account level"
+            item2="Fully backed by underlying bullion inventory"
+            item3="Automatic jurisdictional diversification"
+            item4="Optimized transaction spreads and liquidity"
+        />
+        <Card__Structure
+            title="Consolidated Inventory"
+            description="System-managed allocation designed for efficiency and diversification."
+            item1="Ownership recorded at the account level"
+            item2="Fully backed by underlying bullion inventory"
+            item3="Automatic jurisdictional diversification"
+            item4="Optimized transaction spreads and liquidity"
+        />
+    </article>
+</section>
+

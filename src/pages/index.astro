@@ -10,6 +10,7 @@ import Footer from '../components/Footer.astro';
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/navbar.astro';
 import RecaptchaNotice from '../components/molecules/RecaptchaNotice.astro';  
+import Structure from '../components/Structure.astro';
 ---
 
 <Layout class="max-w-fit ">
@@ -17,9 +18,10 @@ import RecaptchaNotice from '../components/molecules/RecaptchaNotice.astro';
 	<main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
 		<Hero />
 		<Ecosystem />
-		<Custody />
-		<Risk />
 		<Model />
+		<Custody />
+		<Structure />
+		<Risk />
 		<Global />
 	</main>
 	<Intermediaries />
