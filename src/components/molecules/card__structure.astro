@@ -1,22 +1,23 @@
 ---
-const { title, description, item1, item2, item3, item4 } = Astro.props;
+const { title, description, item1, item2, item3, item4, icon } = Astro.props;
 ---
 
 <div
-    class=" flex flex-col items-center justify-center border border-gray-500 w-full h-auto lg:h-full transition-all duration-500 ease-in-out hover:bg-black-700 p-4 "
+    class="flex flex-col items-center justify-center w-full h-auto lg:h-full transition-all duration-500 ease-in-out hover:bg-black-700 p-4"
 >
     <div
-        class="group flex flex-col border border-gray-500 text-gray-300 w-full h-full justify-center items-center gap-3 lg:gap-4 transition-transform duration-500 group-hover:-translate-y-2  hover:border-accent"
+        class="group flex flex-col text-gray-300 w-full h-full justify-left items-left gap-3 lg:gap-4 transition-transform duration-500 hover:border-accent"
     >
+        <img src={icon} alt={title} class="w-6 h-6" />
+
         <h3
-            class="text-white-700 group-hover:text-accent text-sm lg:text-base font-semibold w-full text-left lg:text-center transition-all duration-500 tracking-wider"
+            class="text-white-700 group-hover:text-accent text-sm lg:text-base font-semibold w-full text-left transition-all duration-500 tracking-wider"
         >
             {title}
         </h3>
 
-
         <p
-            class="text-gray-400 group-hover:text-gray-200 mb-2 text-base text-left lg:text-center w-full transition-colors duration-500 line-clamp-4 group-hover:line-clamp-none"
+            class="text-gray-400 group-hover:text-gray-200 mb-2 text-base text-left w-full transition-colors duration-500 line-clamp-4 group-hover:line-clamp-none"
         >
             {description}
         </p>

@@ -1,10 +1,12 @@
 ---
 import Card__Structure from "./molecules/card__structure.astro";
+import icon2 from "../assets/Icons/icon_2.svg";
+
 ---
 
 <section
     id="structure"
-    class="flex flex-col items-center justify-center h-full lg:py-24 w-full pt-8 pb-10 gap-6 bg-black-900"
+    class="flex flex-col items-center justify-center h-full lg:py-24 w-full pt-8 pb-10 gap-6 lg:gap-24 bg-black-900"
 >
     <article
         class="w-full h-auto flex flex-col items-center justify-center gap-2 px-4"
@@ -24,31 +26,34 @@ import Card__Structure from "./molecules/card__structure.astro";
     </article>
     <article
         id="model-cards"
-        class="w-full flex flex-col lg:flex-row items-end px-4 justify-center gap-4 lg:min-h-[400px]"
+        class="w-full flex flex-col lg:flex-row items-end px-4 justify-center gap-4 "
     >
         <Card__Structure
-            title="Assigned Inventory"
-            description="Client-directed holdings with product, jurisdiction, and vault specificity."
-            item1="Direct association with specific bullion products"
-            item2="Maximum control and transparency"
-            item3="Suitable for clients requiring precise allocation"
-            item4="Ideal for investors prioritizing customization"
+            icon={icon2.src}
+            title="Structured and Transparent"
+            description="This structure reinforces transparency and operational discipline across all flows."
+            item1="Client funds routed via approved intermediaries"
+            item2="WiseGold Capital does not hold client funds"
+            item3="Payments sent to suppliers, custody and logistics"
+            item4="Designed for control, clarity and customization"
         />
         <Card__Structure
-            title="Consolidated Inventory"
-            description="System-managed allocation designed for efficiency and diversification."
-            item1="Ownership recorded at the account level"
-            item2="Fully backed by underlying bullion inventory"
-            item3="Automatic jurisdictional diversification"
-            item4="Optimized transaction spreads and liquidity"
+            icon={icon2.src}
+            title="Collateralized Financing "
+            description="Designed to provide liquidity while maintaining underlying bullion exposure."
+            item1="Financing via independent counterparties only"
+            item2="WiseGold Capital coordinates and reports activity"
+            item3="Does not act or operate as a lending entity"
+            item4="Client balances remain fully segregated"
         />
         <Card__Structure
-            title="Consolidated Inventory"
-            description="System-managed allocation designed for efficiency and diversification."
-            item1="Ownership recorded at the account level"
-            item2="Fully backed by underlying bullion inventory"
-            item3="Automatic jurisdictional diversification"
-            item4="Optimized transaction spreads and liquidity"
+            icon={icon2.src}
+            title="A Distinct Infrastructure Model"
+            description="The platform is built to deliver structure, transparency, and operational integrity."
+            item1="No deposit structure within platform design"
+            item2="No exposure to client assets on balance sheet"
+            item3="No rehypothecation by WiseGold Capital"
+            item4="No control over client holdings or allocation"
         />
     </article>
 </section>

@@ -100,40 +100,4 @@ import video from "../assets/Videos/custody.mp4";
         
 </section>
 
-<script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.to(".custody-text", {
-        y: -100,
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-            trigger: ".custody-text",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-        }
-        
-
-    });
-
-    gsap.to(".custody-video", {
-        y: -100,
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-        scrollTrigger: {
-            trigger: ".custody-video",
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-        }
-
-    });
-
-    
-</script>
