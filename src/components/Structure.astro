@@ -9,6 +9,7 @@ import icon2 from "../assets/Icons/icon_2.svg";
     class="flex flex-col items-center justify-center h-full lg:py-24 w-full pt-8 pb-10 gap-6 lg:gap-24 bg-black-900"
 >
     <article
+        id="structure-header"
         class="w-full h-auto flex flex-col items-center justify-center gap-2 px-4"
     >
         <h2
@@ -25,8 +26,8 @@ import icon2 from "../assets/Icons/icon_2.svg";
         </p>
     </article>
     <article
-        id="model-cards"
-        class="w-full flex flex-col lg:flex-row items-end px-4 justify-center gap-4 "
+        id="structure-cards"
+        class="w-full flex flex-col lg:flex-row items-end px-4 justify-center gap-8 "
     >
         <Card__Structure
             icon={icon2.src}
@@ -57,4 +58,56 @@ import icon2 from "../assets/Icons/icon_2.svg";
         />
     </article>
 </section>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const section = document.querySelector("#structure");
+        const headers = document.querySelectorAll("#structure-header h2, #structure-header p");
+        const cards   = gsap.utils.toArray("#structure-cards > *");
+
+        if (!section || cards.length === 0) return;
+
+        // Headers: entran suavemente al llegar la sección al viewport
+        gsap.fromTo(
+            headers,
+            { opacity: 0, y: 24 },
+            {
+                opacity: 1,
+                y: 0,
+                stagger: 0.1,
+                duration: 0.6,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse",
+                },
+            },
+        );
+
+        // Cards: aparecen inmediatamente al entrar la sección —
+        // sin pin, sin scrub, sin necesidad de scroll adicional
+        gsap.fromTo(
+            cards,
+            { opacity: 0, y: 40 },
+            {
+                opacity: 1,
+                y: 0,
+                stagger: 0.15,
+                duration: 0.7,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse",
+                },
+            },
+        );
+    });
+</script>
 

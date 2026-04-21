@@ -68,58 +68,47 @@ import image4 from "../assets/Images/image_4.png";
     gsap.registerPlugin(ScrollTrigger);
 
     document.addEventListener("DOMContentLoaded", () => {
-        const initRiskPinnedAnimation = () => {
-            const riskSection = document.querySelector("#risk");
-            const headers = document.querySelectorAll("#risk h2, #risk p");
-            const cards = gsap.utils.toArray("#risk-cards > *");
+        const section = document.querySelector("#risk");
+        const headers = document.querySelectorAll("#risk h2, #risk p");
+        const cards   = gsap.utils.toArray("#risk-cards > *");
 
-            if (!riskSection || cards.length === 0) return;
+        if (!section || cards.length === 0) return;
 
-            // Headers enter early to fill the gap
-            gsap.fromTo(
-                headers,
-                { opacity: 0, y: 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    stagger: 0.1,
-                    duration: 0.5,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: riskSection,
-                        start: "top 95%",
-                        toggleActions: "play none none reverse",
-                    },
-                },
-            );
-
-            // Cards follow sequentially with pinning
-            const mainTl = gsap.timeline({
+        // Headers: entran al llegar la sección al viewport
+        gsap.fromTo(
+            headers,
+            { opacity: 0, y: 24 },
+            {
+                opacity: 1,
+                y: 0,
+                stagger: 0.1,
+                duration: 0.6,
+                ease: "power2.out",
                 scrollTrigger: {
-                    trigger: riskSection,
-                    start: "top top",
-                    pin: true,
-                    scrub: 1,
-                    invalidateOnRefresh: true,
+                    trigger: section,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse",
                 },
-            });
+            },
+        );
 
-            cards.forEach((card, i) => {
-                const startTime = i * 0.4;
-                mainTl.fromTo(
-                    card,
-                    { opacity: 0, y: 100 },
-                    { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" },
-                    startTime,
-                );
-            });
-
-            mainTl.to({}, { duration: 0.5 });
-            ScrollTrigger.refresh();
-        };
-
-        initRiskPinnedAnimation();
-        window.addEventListener("load", () => ScrollTrigger.refresh());
-        setTimeout(() => ScrollTrigger.refresh(), 1000);
+        // Cards: aparecen automáticamente al entrar la sección —
+        // sin pin, sin scrub, sin scroll adicional requerido
+        gsap.fromTo(
+            cards,
+            { opacity: 0, y: 40 },
+            {
+                opacity: 1,
+                y: 0,
+                stagger: 0.12,
+                duration: 0.7,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse",
+                },
+            },
+        );
     });
 </script>
