@@ -1,0 +1,19 @@
+{
+  "name": "WiseGold Capital",
+  "short_name": "WiseGold Capital",
+  "icons": [
+    {
+      "src": "/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#1C1C1C",
+  "background_color": "#1C1C1C",
+  "display": "standalone"
+}

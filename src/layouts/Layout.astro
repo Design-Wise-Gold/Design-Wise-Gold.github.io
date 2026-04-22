@@ -19,10 +19,10 @@ export interface Props {
 }
 
 const {
-  title = "WiseGold — Secure & Liquid Digital Gold Infrastructure",
-  description = "WiseGold Capital provides institutional-grade gold infrastructure: fractionalized digital gold backed by real bullion held in audited vaults. Transparent, liquid, and secure.",
-  canonical = "https://www.wise.gold/",
-  ogImage = "https://www.wise.gold/og-image.jpg",
+  title = "WiseGold Capital | Physical Gold & Silver Custody Infrastructure",
+  description = "WiseGold provides institutional-grade custody infrastructure for physical gold and silver. Transparent, fully allocated bullion held in independent depositories",
+  canonical = "https://wise.gold/",
+  ogImage = "https://wise.gold/og-image.jpg",
   ogType = "website",
   articlePublishedTime,
   noindex = false,
@@ -41,9 +41,21 @@ const twitterHandle = "@wisegold";
     <meta name="generator" content={Astro.generator} />
 
     <!-- ─── Favicons ─────────────────────────────────────────── -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <!-- Favicon principal (moderno) -->
+    <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
+
+    <!-- Fallbacks -->
+    <link rel="icon" href="/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" href="/favicon/favicon-16x16.png" sizes="16x16" />
+
+    <!-- Apple -->
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+
+    <!-- Android / PWA -->
+    <link rel="manifest" href="/favicon/site.webmanifest.json" />
+
+    <!-- Color UI navegador -->
+    <meta name="theme-color" content="#1C1C1C" />
 
     <!-- ─── SEO Fundamentals ──────────────────────────────────── -->
     <title>{title}</title>
@@ -162,225 +174,243 @@ const twitterHandle = "@wisegold";
 </html>
 
 <script>
-(function () {
-  const canvas = document.getElementById("gold-matrix") as HTMLCanvasElement | null;
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+  (function () {
+    const canvas = document.getElementById(
+      "gold-matrix",
+    ) as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-  interface Particle {
-    x: number; y: number;
-    vx: number; vy: number;
-    rotation: number;
-    rotationSpeed: number;
-    w: number; h: number;
-    alpha: number;
-    life: number; maxLife: number;
-    baseColor: string;
-    highlightColor: string;
-    gravity: number;
-    friction: number;
-  }
+    interface Particle {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      rotation: number;
+      rotationSpeed: number;
+      w: number;
+      h: number;
+      alpha: number;
+      life: number;
+      maxLife: number;
+      baseColor: string;
+      highlightColor: string;
+      gravity: number;
+      friction: number;
+    }
 
-  // Gold palette — base + highlight for 3D ingot look
-  const PALETTE = [
-    { base: "#b48b1e", hi: "#f5d66b" },
-    { base: "#d4a017", hi: "#ffe066" },
-    { base: "#a67c00", hi: "#ffd700" },
-    { base: "#c9981a", hi: "#ffe599" },
-    { base: "#8c6d1f", hi: "#e6c84d" },
-  ];
+    // Gold palette — base + highlight for 3D ingot look
+    const PALETTE = [
+      { base: "#b48b1e", hi: "#f5d66b" },
+      { base: "#d4a017", hi: "#ffe066" },
+      { base: "#a67c00", hi: "#ffd700" },
+      { base: "#c9981a", hi: "#ffe599" },
+      { base: "#8c6d1f", hi: "#e6c84d" },
+    ];
 
-  let mouse = { x: -9999, y: -9999 };
-  let mouseVel = { x: 0, y: 0 };
-  let prevMouse = { x: -9999, y: -9999 };
-  let particles: Particle[] = [];
-  let rafId: number;
-  const MAX_PARTICLES = 60;
-  const SPAWN_RADIUS = 40;
-  const FRICTION = 0.94;  // alta → flotan más antes de detenerse
-  const GRAVITY = 0.028; // suave → caída elegante
+    let mouse = { x: -9999, y: -9999 };
+    let mouseVel = { x: 0, y: 0 };
+    let prevMouse = { x: -9999, y: -9999 };
+    let particles: Particle[] = [];
+    let rafId: number;
+    const MAX_PARTICLES = 60;
+    const SPAWN_RADIUS = 40;
+    const FRICTION = 0.94; // alta → flotan más antes de detenerse
+    const GRAVITY = 0.028; // suave → caída elegante
 
-  function resize() {
-    canvas!.width = window.innerWidth;
-    canvas!.height = window.innerHeight;
-  }
+    function resize() {
+      canvas!.width = window.innerWidth;
+      canvas!.height = window.innerHeight;
+    }
 
-  function spawnParticle() {
-    if (particles.length >= MAX_PARTICLES) return;
-    if (mouse.x < 0) return;
+    function spawnParticle() {
+      if (particles.length >= MAX_PARTICLES) return;
+      if (mouse.x < 0) return;
 
-    // Only spawn when mouse is moving
-    const speed = Math.sqrt(mouseVel.x * mouseVel.x + mouseVel.y * mouseVel.y);
-    if (speed < 0.2) return;
+      // Only spawn when mouse is moving
+      const speed = Math.sqrt(
+        mouseVel.x * mouseVel.x + mouseVel.y * mouseVel.y,
+      );
+      if (speed < 0.2) return;
 
-    // Spawn near cursor with slight random offset
-    const offsetAngle = Math.random() * Math.PI * 2;
-    const offsetR = Math.random() * SPAWN_RADIUS;
-    const x = mouse.x + Math.cos(offsetAngle) * offsetR;
-    const y = mouse.y + Math.sin(offsetAngle) * offsetR;
+      // Spawn near cursor with slight random offset
+      const offsetAngle = Math.random() * Math.PI * 2;
+      const offsetR = Math.random() * SPAWN_RADIUS;
+      const x = mouse.x + Math.cos(offsetAngle) * offsetR;
+      const y = mouse.y + Math.sin(offsetAngle) * offsetR;
 
-    // Velocity inherits mouse direction + some spread
-    const spread = 0;
-    const vx = mouseVel.x * (0.3 + Math.random() * 0.4) + (Math.random() - 0.5) * spread;
-    const vy = mouseVel.y * (0.3 + Math.random() * 0.4) + (Math.random() - 0.5) * spread;
+      // Velocity inherits mouse direction + some spread
+      const spread = 0;
+      const vx =
+        mouseVel.x * (0.3 + Math.random() * 0.4) +
+        (Math.random() - 0.5) * spread;
+      const vy =
+        mouseVel.y * (0.3 + Math.random() * 0.4) +
+        (Math.random() - 0.5) * spread;
 
-    const palette = PALETTE[Math.floor(Math.random() * PALETTE.length)];
-    const maxLife = 90 + Math.random() * 80; // más vida → fade tiene espacio
+      const palette = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+      const maxLife = 90 + Math.random() * 80; // más vida → fade tiene espacio
 
-    // Proporciones de lingote con más variedad natural
-    const w = 4 + Math.random() * 9;
-    const h = w * (0.30 + Math.random() * 0.25);
+      // Proporciones de lingote con más variedad natural
+      const w = 4 + Math.random() * 9;
+      const h = w * (0.3 + Math.random() * 0.25);
 
-    particles.push({
-      x, y, vx, vy,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.022, // giro lento y orgánico
-      w, h,
-      alpha: 0,
-      life: 0,
-      maxLife,
-      baseColor: palette.base,
-      highlightColor: palette.hi,
-      gravity: GRAVITY + Math.random() * 0.01,
-      friction: FRICTION - Math.random() * 0.01,
-      phase: Math.random() * Math.PI * 2, // fase para oscilación lateral
-    } as any);
-  }
+      particles.push({
+        x,
+        y,
+        vx,
+        vy,
+        rotation: Math.random() * Math.PI * 2,
+        rotationSpeed: (Math.random() - 0.5) * 0.022, // giro lento y orgánico
+        w,
+        h,
+        alpha: 0,
+        life: 0,
+        maxLife,
+        baseColor: palette.base,
+        highlightColor: palette.hi,
+        gravity: GRAVITY + Math.random() * 0.01,
+        friction: FRICTION - Math.random() * 0.01,
+        phase: Math.random() * Math.PI * 2, // fase para oscilación lateral
+      } as any);
+    }
 
-  function drawIngot(p: Particle, alpha: number) {
-    ctx!.save();
-    ctx!.translate(p.x, p.y);
-    ctx!.rotate(p.rotation);
+    function drawIngot(p: Particle, alpha: number) {
+      ctx!.save();
+      ctx!.translate(p.x, p.y);
+      ctx!.rotate(p.rotation);
 
-    // Main body
-    ctx!.fillStyle = p.baseColor;
-    ctx!.globalAlpha = alpha;
-    ctx!.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      // Main body
+      ctx!.fillStyle = p.baseColor;
+      ctx!.globalAlpha = alpha;
+      ctx!.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
 
-    // Top highlight edge (makes it look 3D)
-    ctx!.fillStyle = p.highlightColor;
-    ctx!.globalAlpha = alpha * 0.7;
-    ctx!.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * 0.35);
+      // Top highlight edge (makes it look 3D)
+      ctx!.fillStyle = p.highlightColor;
+      ctx!.globalAlpha = alpha * 0.7;
+      ctx!.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * 0.35);
 
-    // Left highlight edge
-    ctx!.globalAlpha = alpha * 0.4;
-    ctx!.fillRect(-p.w / 2, -p.h / 2, p.w * 0.15, p.h);
+      // Left highlight edge
+      ctx!.globalAlpha = alpha * 0.4;
+      ctx!.fillRect(-p.w / 2, -p.h / 2, p.w * 0.15, p.h);
 
-    ctx!.restore();
-  }
+      ctx!.restore();
+    }
 
-  function draw() {
-    ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+    function draw() {
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
 
-    // Spawn particles based on mouse speed
-    const speed = Math.sqrt(mouseVel.x * mouseVel.x + mouseVel.y * mouseVel.y);
-    const spawnCount = Math.min(Math.floor(speed * 0.4), 4);
-    for (let i = 0; i < spawnCount; i++) spawnParticle();
+      // Spawn particles based on mouse speed
+      const speed = Math.sqrt(
+        mouseVel.x * mouseVel.x + mouseVel.y * mouseVel.y,
+      );
+      const spawnCount = Math.min(Math.floor(speed * 0.4), 4);
+      for (let i = 0; i < spawnCount; i++) spawnParticle();
 
-    particles = particles.filter((p) => {
-      p.life++;
+      particles = particles.filter((p) => {
+        p.life++;
 
-      // Physics: gravedad suave + fricción alta + oscilación lateral
-      p.vy += p.gravity;
-      p.vx *= p.friction;
-      p.vy *= p.friction;
-      // Micro-deriva lateral sinusoidal — movimiento orgánico sin dirección fija
-      p.x += p.vx + Math.sin((p as any).phase + p.life * 0.045) * 0.18;
-      p.y += p.vy;
-      p.rotation += p.rotationSpeed;
+        // Physics: gravedad suave + fricción alta + oscilación lateral
+        p.vy += p.gravity;
+        p.vx *= p.friction;
+        p.vy *= p.friction;
+        // Micro-deriva lateral sinusoidal — movimiento orgánico sin dirección fija
+        p.x += p.vx + Math.sin((p as any).phase + p.life * 0.045) * 0.18;
+        p.y += p.vy;
+        p.rotation += p.rotationSpeed;
 
-      // Fade in / fade out con ease-out cúbico
-      const progress = p.life / p.maxLife;
-      const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-      if (progress < 0.25) {
-        p.alpha = easeOut(progress / 0.25);
-      } else if (progress > 0.60) {
-        p.alpha = easeOut((1 - progress) / 0.40);
-      } else {
-        p.alpha = 1;
-      }
+        // Fade in / fade out con ease-out cúbico
+        const progress = p.life / p.maxLife;
+        const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
+        if (progress < 0.25) {
+          p.alpha = easeOut(progress / 0.25);
+        } else if (progress > 0.6) {
+          p.alpha = easeOut((1 - progress) / 0.4);
+        } else {
+          p.alpha = 1;
+        }
 
-      // Proximity glow
-      const dx = p.x - mouse.x;
-      const dy = p.y - mouse.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const proximity = Math.max(0, 1 - dist / 200);
+        // Proximity glow
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const proximity = Math.max(0, 1 - dist / 200);
 
-      const alpha = p.alpha * (0.4 + proximity * 0.6) * 0.85;
+        const alpha = p.alpha * (0.4 + proximity * 0.6) * 0.85;
 
-      // Glow when near cursor
-      if (proximity > 0.2) {
-        ctx!.shadowColor = `rgba(255,215,0,${proximity * 0.6})`;
-        ctx!.shadowBlur = 8 * proximity;
-      } else {
+        // Glow when near cursor
+        if (proximity > 0.2) {
+          ctx!.shadowColor = `rgba(255,215,0,${proximity * 0.6})`;
+          ctx!.shadowBlur = 8 * proximity;
+        } else {
+          ctx!.shadowBlur = 0;
+        }
+
+        drawIngot(p, alpha);
         ctx!.shadowBlur = 0;
+        ctx!.globalAlpha = 1;
+
+        return p.life < p.maxLife;
+      });
+
+      // Decay mouse velocity over time
+      mouseVel.x *= 0.92;
+      mouseVel.y *= 0.92;
+
+      rafId = requestAnimationFrame(draw);
+    }
+
+    // Track mouse position + velocity
+    document.addEventListener("mousemove", (e: MouseEvent) => {
+      if (prevMouse.x > -9000) {
+        mouseVel.x = e.clientX - prevMouse.x;
+        mouseVel.y = e.clientY - prevMouse.y;
       }
-
-      drawIngot(p, alpha);
-      ctx!.shadowBlur = 0;
-      ctx!.globalAlpha = 1;
-
-      return p.life < p.maxLife;
+      prevMouse.x = e.clientX;
+      prevMouse.y = e.clientY;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     });
 
-    // Decay mouse velocity over time
-    mouseVel.x *= 0.92;
-    mouseVel.y *= 0.92;
+    document.addEventListener("mouseleave", () => {
+      mouse.x = -9999;
+      mouse.y = -9999;
+      prevMouse.x = -9999;
+      prevMouse.y = -9999;
+      mouseVel.x = 0;
+      mouseVel.y = 0;
+    });
 
-    rafId = requestAnimationFrame(draw);
-  }
+    window.addEventListener("resize", () => {
+      cancelAnimationFrame(rafId);
+      resize();
+      draw();
+    });
 
-  // Track mouse position + velocity
-  document.addEventListener("mousemove", (e: MouseEvent) => {
-    if (prevMouse.x > -9000) {
-      mouseVel.x = e.clientX - prevMouse.x;
-      mouseVel.y = e.clientY - prevMouse.y;
-    }
-    prevMouse.x = e.clientX;
-    prevMouse.y = e.clientY;
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-
-  document.addEventListener("mouseleave", () => {
-    mouse.x = -9999;
-    mouse.y = -9999;
-    prevMouse.x = -9999;
-    prevMouse.y = -9999;
-    mouseVel.x = 0;
-    mouseVel.y = 0;
-  });
-
-  window.addEventListener("resize", () => {
-    cancelAnimationFrame(rafId);
     resize();
     draw();
-  });
-
-  resize();
-  draw();
-})();
+  })();
 </script>
 
 <style>
-	html {
-		margin: 0;
-		width: 100%;
-		max-width: 100%;
-		overflow-x: hidden;
-		background-color: var(--color-black-900);
-		box-sizing: border-box;
-		font-family: var(--font-urbanist);
-		scroll-behavior: smooth;
-	}
+  html {
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: var(--color-black-900);
+    box-sizing: border-box;
+    font-family: var(--font-urbanist);
+    scroll-behavior: smooth;
+  }
 
-	body {
-		margin: 0 auto;
-		width: 100%;
-		max-width: 1920px;
-		overflow-x: hidden;
-		box-sizing: border-box;
-		font-family: var(--font-urbanist);
-	}
+  body {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1920px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    font-family: var(--font-urbanist);
+  }
 </style>

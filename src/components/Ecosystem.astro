@@ -81,11 +81,16 @@ import video7 from "../assets/Videos/video_7.mp4";
         // 2. Hero Exit Animations (Text & Cards fading/moving while being covered)
         const tlHeroExit = gsap.timeline({
             scrollTrigger: {
-                trigger: heroHeader,
-                start: "top top",
-                end: "bottom top", 
-                scrub: 1,
+                trigger: ecosystemSection,
+                start: "top bottom",
+                end: "top top", 
+                scrub: true,
             }
+        });
+
+        tlHeroExit.to("#hero-left, #hero-right", {
+            autoAlpha: 0,
+            ease: "power4.inOut",
         });
 
         
