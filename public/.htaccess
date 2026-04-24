@@ -1,0 +1,28 @@
+# ──────────────────────────────────────────────────────────────────────
+# WiseGold Capital - Server Configuration
+# Handles Custom 404 and Pretty URLs for Apache Servers
+# ──────────────────────────────────────────────────────────────────────
+
+# 1. Custom 404 Page
+# Points to the generated 404.html from Astro
+ErrorDocument 404 /404.html
+
+# 2. Pretty URLs (Remove .html extension)
+RewriteEngine On
+RewriteBase /
+
+# Force trailing slash on directories (Optional but recommended for consistency)
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.+[^/])$ /$1/ [R=301,L]
+
+# If the request is not a real file or directory, try adding .html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L,QSA]
+
+# 3. Security: Disable directory browsing
+Options -Indexes
+
+# 4. Handle index.html inside folders automatically
+DirectoryIndex index.html

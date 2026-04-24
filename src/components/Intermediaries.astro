@@ -175,11 +175,10 @@ The platform provides:
     </div>
 </section>
 
-<!-- Reemplaza TU_SITE_KEY_PUBLICA con tu clave de sitio (Site Key) de reCAPTCHA v3 -->
-<!-- Normalmente en Astro puedes usar: import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY -->
+<!-- ReCaptcha v3 Script -->
 <script
     is:inline
-    src="https://www.google.com/recaptcha/api.js?render=6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O"
+    src={`https://www.google.com/recaptcha/api.js?render=${import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY}`}
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -207,7 +206,7 @@ The platform provides:
                         // @ts-ignore - Reemplaza con tu clave pública
                         grecaptcha
                             .execute(
-                                "6LehwK0sAAAAABr4z8Si-6UYZPesGQ1WMhcQNc8O",
+                                import.meta.env.PUBLIC_RECAPTCHA_SITE_KEY,
                                 { action: "submit" },
                             )
                             .then(async function (token: string) {

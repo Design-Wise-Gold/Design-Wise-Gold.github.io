@@ -1,0 +1,66 @@
+---
+/**
+ * EmailObfuscator.astro
+ * Protects email addresses from spambots by assembling them via client-side JS.
+ */
+interface Props {
+  user: string;
+  domain: string;
+  className?: string;
+}
+
+const { user, domain, className = "" } = Astro.props;
+---
+
+<a
+  href="javascript:void(0)"
+  data-u={user}
+  data-d={domain}
+  class={`email-obfuscator ${className}`}
+  title="Click to reveal email"
+>
+  [protected email]
+</a>
+
+<script>
+  function initObfuscators() {
+    const links = document.querySelectorAll(".email-obfuscator");
+
+    links.forEach((link) => {
+      // Re-assemble on interaction to maximize protection
+      const reveal = () => {
+        const u = link.getAttribute("data-u");
+        const d = link.getAttribute("data-d");
+        if (u && d) {
+          const email = `${u}@${d}`;
+          const anchor = link as HTMLAnchorElement;
+          anchor.href = `mailto:${email}`;
+          anchor.textContent = email;
+          anchor.removeAttribute("title");
+          
+          // Cleanup listeners after reveal
+          link.removeEventListener("mouseenter", reveal);
+          link.removeEventListener("click", reveal);
+          link.removeEventListener("touchstart", reveal);
+        }
+      };
+
+      link.addEventListener("mouseenter", reveal);
+      link.addEventListener("click", reveal);
+      link.addEventListener("touchstart", reveal);
+    });
+  }
+
+  // Initial load
+  initObfuscators();
+  
+  // Handle view transitions if enabled
+  document.addEventListener("astro:after-swap", initObfuscators);
+</script>
+
+<style>
+  .email-obfuscator {
+    cursor: pointer;
+    unicode-bidi: bidi-override;
+  }
+</style>

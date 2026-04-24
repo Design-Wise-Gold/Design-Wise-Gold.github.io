@@ -2,12 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailObfuscator from "../components/molecules/EmailObfuscator.astro";
 ---
 
 <Layout
   title="Privacy Policy — WiseGold Capital"
   description="WiseGold Capital's Privacy Policy. Learn how we collect, use, and protect your information in compliance with applicable data protection standards."
-  canonical="https://www.wise.gold/privacy/"
+  canonical="https://wise.gold/privacy"
   noindex={true}
 >
     <Navbar />
@@ -187,9 +188,9 @@ import Footer from "../components/Footer.astro";
                 </p>
                 <p class="text-gray-400 text-sm leading-relaxed">
                     400 N Ashley Dr Ste 1900, Tampa, FL 33543, USA
-                </p>
+                </p> 
                 <p class="text-gray-400 text-sm leading-relaxed">
-                    <a href="mailto:privacy@wise.gold" class="text-accent hover:underline">privacy@wise.gold</a>
+                    <EmailObfuscator user="privacy" domain="wise.gold" className="text-accent hover:underline" />
                 </p>
             </section>
 

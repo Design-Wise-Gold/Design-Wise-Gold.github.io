@@ -28,20 +28,18 @@ const {
   noindex = false,
 } = Astro.props;
 
-const siteName = "WiseGold";
-const twitterHandle = "@wisegold";
+const siteName = "WiseGold Capital";
+const twitterHandle = "@wisegoldcapital";
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- ─── Core ──────────────────────────────────────────────── -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- ─── Favicons ─────────────────────────────────────────── -->
-    <!-- Favicon principal (moderno) -->
+    <!-- Favicons -->
     <link rel="icon" href="/favicon/favicon.svg" type="image/svg+xml" />
 
     <!-- Fallbacks -->
@@ -61,15 +59,13 @@ const twitterHandle = "@wisegold";
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    {
-      !noindex && (
-        <meta
-          name="robots"
-          content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
-        />
-      )
-    }
+    
+    <!-- Robots -->
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    )}
 
     <!-- ─── Open Graph ────────────────────────────────────────── -->
     <meta property="og:type" content={ogType} />
@@ -82,7 +78,7 @@ const twitterHandle = "@wisegold";
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content={`${siteName} – Secure Digital Gold Infrastructure`}
+      content={`${siteName} - Physical Gold & Silver Custody Infrastructure`}
     />
     <meta property="og:locale" content="en_US" />
     {
@@ -103,43 +99,48 @@ const twitterHandle = "@wisegold";
     <meta name="twitter:image" content={ogImage} />
     <meta
       name="twitter:image:alt"
-      content={`${siteName} – Secure Digital Gold Infrastructure`}
+      content={`${siteName} - Physical Gold & Silver Custody Infrastructure`}
     />
 
     <!-- ─── Extra SEO signals ─────────────────────────────────── -->
-    <meta name="theme-color" content="#0a0a0a" />
-    <meta name="author" content="WiseGold Capital, LLC" />
+    <meta name="theme-color" content="#1C1C1C" />
+    <meta name="author" content="WiseGold Capital LLC" />
     <meta
       name="keywords"
-      content="digital gold, gold investment, bullion custody, fractionalized gold, gold infrastructure, secure gold, liquid gold, WiseGold"
+      content="WiseGold Capital, physical gold, gold investment, bullion custody, gold infrastructure, secure gold, WiseGold, silver, Custody Infrastructure, Physical Gold & Silver Custody Infrastructure"
     />
 
-    <!-- ─── JSON-LD – Organization ───────────────────────────── -->
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
+    {import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION && (
+      <meta name="google-site-verification" content={import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION} />
+    )}
+
+    <!-- ─── JSON-LD – Organization & WebSite ─────────────────── -->
+    <script type="application/ld+json" set:html={JSON.stringify([
+      {
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "WiseGold Capital",
-        url: "https://www.wise.gold",
-        logo: "https://www.wise.gold/favicon.svg",
-        description: description,
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "400 N Ashley Dr Ste 1900",
-          addressLocality: "Tampa",
-          addressRegion: "FL",
-          postalCode: "33543",
-          addressCountry: "US",
-        },
-        contactPoint: {
+        "@id": "https://wise.gold/#organization",
+        "name": "WiseGold Capital",
+        "url": "https://wise.gold",
+        "logo": "https://wise.gold/favicon/favicon.svg",
+        "description": description,
+        "contactPoint": {
           "@type": "ContactPoint",
-          email: "web@wise.gold",
-          contactType: "customer support",
+          "email": "sage@wise.gold",
+          "contactType": "customer support"
         },
-        sameAs: ["https://www.linkedin.com/company/wisegold"],
-      })}
-    />
+        "sameAs": ["https://www.linkedin.com/company/wisegoldcapital"]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://wise.gold/#website",
+        "url": "https://wise.gold",
+        "name": "WiseGold Capital",
+        "description": "Institutional-grade physical gold & silver custody infrastructure.",
+        "publisher": { "@id": "https://wise.gold/#organization" }
+      }
+    ])} />
 
     <!-- ─── Fonts ─────────────────────────────────────────────── -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

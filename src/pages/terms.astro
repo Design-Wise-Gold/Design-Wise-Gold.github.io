@@ -2,12 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/navbar.astro";
 import Footer from "../components/Footer.astro";
+import EmailObfuscator from "../components/molecules/EmailObfuscator.astro";
 ---
 
 <Layout
   title="Terms and Conditions — WiseGold Capital"
   description="Terms of Use for WiseGold Capital, LLC. Read about our informational purpose, services scope, jurisdictional limitations, and governing law."
-  canonical="https://www.wise.gold/terms/"
+  canonical="https://wise.gold/terms/"
   noindex={true}
 >
     <Navbar />
@@ -203,7 +204,7 @@ import Footer from "../components/Footer.astro";
                     400 N Ashley Dr Ste 1900, Tampa, FL 33543, USA
                 </p>
                 <p class="text-gray-400 text-sm leading-relaxed">
-                    <a href="mailto:web@wise.gold" class="text-accent hover:underline">web@wise.gold</a>
+                    <EmailObfuscator user="web" domain="wise.gold" className="text-accent hover:underline" />
                 </p>
             </section>
 
