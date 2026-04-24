@@ -3,15 +3,19 @@ const { title, description, item1, item2, item3, item4, icon } = Astro.props;
 ---
 
 <div
-    class="flex flex-col items-center justify-center w-full h-auto lg:h-full transition-all duration-500 ease-in-out hover:bg-black-700 lg:p-4"
+    class="flex flex-col items-center justify-center w-full h-auto lg:h-full transition-all duration-500 ease-in-out hover:bg-black-700 lg:p-4 border border-gray-500 p-2"
 >
     <div
-        class="group flex flex-col text-gray-300 w-full h-full justify-left items-left gap-3 lg:gap-4 transition-transform duration-500 hover:border-accent"
+        class="group flex flex-col w-full h-full justify-left items-left gap-3 lg:gap-4 transition-transform duration-500 hover:border-accent"
     >
-        <img src={icon} alt={title} class="w-6 h-6" />
+        <div
+            class="w-8 h-8 lg:w-12 lg:h-12 bg-gray-400 group-hover:bg-gray-300 transition-colors duration-300"
+            style={`-webkit-mask: url(${icon}) no-repeat center; mask: url(${icon}) no-repeat center; -webkit-mask-size: contain; mask-size: contain;`}
+        >
+        </div>
 
         <h3
-            class="text-gray-300 group-hover:text-accent text-sm lg:text-base font-semibold w-full text-left transition-all duration-500 tracking-wider"
+            class="text-white-700 group-hover:text-accent text-sm lg:text-base font-semibold w-full text-left transition-all duration-500 tracking-wider"
         >
             {title}
         </h3>

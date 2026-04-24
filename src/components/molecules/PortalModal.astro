@@ -1,0 +1,113 @@
+---
+---
+
+<div
+    id="portal-modal-overlay"
+    class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+>
+    <div
+        id="portal-modal-card"
+        class="relative w-[90%] max-w-lg bg-black-900 border border-gray-500 rounded-xl p-8 lg:p-12 shadow-2xl transform scale-95 opacity-0 transition-all duration-300"
+    >
+        <!-- Close button -->
+        <button
+            id="portal-modal-close"
+            aria-label="Close portal modal"
+            class="absolute top-4 right-4 p-2 text-gray-500 hover:text-accent transition-colors duration-200"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M18 6 6 18"></path>
+                <path d="m6 6 12 12"></path>
+            </svg>
+        </button>
+
+        <!-- Content -->
+        <div class="flex flex-col gap-6 text-left">
+            <h3 class="text-2xl font-bebas-neue text-white-700 tracking-widest uppercase">
+                Access Portal <span class="text-accent">Coming Soon</span>
+            </h3>
+            
+            <div class="w-12 h-0.5 bg-accent"></div>
+
+            <p class="text-gray-300 text-base lg:text-lg leading-relaxed font-light">
+                We are presently in a deliberate development phase, with a targeted launch in the 
+                <span class="text-accent font-medium">last quarter of 2026.</span> 
+                This measured timeline enables the refinement of our compliance framework, 
+                the strengthening of key ecosystem relationships, and the establishment 
+                of a foundation defined by resilience, transparency, and structural integrity.
+            </p>
+
+            <button 
+                id="portal-modal-close-btn"
+                class="mt-4 px-6 py-3 border border-gray-500 text-gray-300 hover:text-accent hover:border-accent transition-all duration-300 text-sm uppercase tracking-widest w-fit"
+            >
+                Understood
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    import { gsap } from "gsap";
+
+    const overlay = document.querySelector("#portal-modal-overlay");
+    const card = document.querySelector("#portal-modal-card");
+    const closeButtons = document.querySelectorAll("#portal-modal-close, #portal-modal-close-btn");
+    const portalToggles = document.querySelectorAll("#portal-toggle, #portal-toggle-mobile");
+
+    function openModal() {
+        if (!overlay || !card) return;
+        
+        // If mobile menu is open, we might want to close it or let the modal overlay it
+        // The modal has z-[100], so it will be on top anyway.
+        
+        document.body.style.overflow = "hidden";
+        overlay.classList.remove("pointer-events-none");
+        
+        const tl = gsap.timeline();
+        tl.to(overlay, { opacity: 1, duration: 0.4, ease: "power2.out" })
+          .to(card, { opacity: 1, scale: 1, duration: 0.5, ease: "back.out(1.7)" }, "-=0.2");
+    }
+
+    function closeModal() {
+        if (!overlay || !card) return;
+        
+        const tl = gsap.timeline({
+            onComplete: () => {
+                overlay.classList.add("pointer-events-none");
+                // Only restore overflow if mobile menu is not open (though mobile menu also sets overflow)
+                if (!document.querySelector("#mobile-menu")?.classList.contains("open")) {
+                     document.body.style.overflow = "";
+                }
+            }
+        });
+        
+        tl.to(card, { opacity: 0, scale: 0.95, duration: 0.3, ease: "power2.in" })
+          .to(overlay, { opacity: 0, duration: 0.3, ease: "power2.in" }, "-=0.1");
+    }
+
+    portalToggles.forEach(toggle => {
+        toggle.addEventListener("click", (e) => {
+            e.preventDefault();
+            openModal();
+        });
+    });
+
+    closeButtons.forEach(btn => {
+        btn.addEventListener("click", closeModal);
+    });
+
+    overlay?.addEventListener("click", (e) => {
+        if (e.target === overlay) closeModal();
+    });
+</script>
