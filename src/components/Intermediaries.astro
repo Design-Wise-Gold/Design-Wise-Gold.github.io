@@ -1,5 +1,5 @@
 ---
-const endpoint = "/api/procesar_formulario";
+const endpoint = "/api/api.php?action=submit"; 
 ---
 
 <section
@@ -218,10 +218,9 @@ The platform provides:
 
                                 // Enviar el token Y los datos al backend (PHP)
                                 try {
-                                    // 👇 Aquí hacemos el Call al nuevo endpoint PHP
-                                    // Asegúrate de ajustar la ruta si el PHP está en otro dominio o carpeta
+                                    // 👇 Usamos form.action para mantener consistencia con la variable 'endpoint'
                                     const response = await fetch(
-                                        "/api/procesar_formulario.php",
+                                        form.action,
                                         {
                                             method: "POST",
                                             headers: {
