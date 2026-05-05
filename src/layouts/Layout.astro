@@ -16,6 +16,8 @@ export interface Props {
   articlePublishedTime?: string;
   /** noindex — set true for legal/utility pages you don't want indexed */
   noindex?: boolean;
+  /** Page language — defaults to 'en' */
+  lang?: string;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   ogType = "website",
   articlePublishedTime,
   noindex = false,
+  lang = "en",
 } = Astro.props;
 
 const siteName = "WiseGold Capital";
@@ -33,7 +36,7 @@ const twitterHandle = "@wisegoldcapital";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

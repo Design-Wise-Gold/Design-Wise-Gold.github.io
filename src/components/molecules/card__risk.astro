@@ -25,7 +25,7 @@ const { title, description, icon, image } = Astro.props;
         <!-- IMAGE WRAPPER (Expands height on hover) -->
         <div class="grid transition-all duration-500 ease-in-out grid-rows-[0fr] group-hover:grid-rows-[1fr] opacity-0 group-hover:opacity-100 w-full">
             <div class="overflow-hidden flex justify-center w-full mt-0">
-                <img src={image} alt="WiseGold Risk Management" class="w-full h-24 lg:h-40 object-cover rounded mt-4 border border-gray-500/30">
+                <img src={image} alt={`WiseGold Risk Management - ${title}`} class="w-full h-24 lg:h-40 object-cover rounded mt-4 border border-gray-500/30">
             </div>
         </div>
     </div>

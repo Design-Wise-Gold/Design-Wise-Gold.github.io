@@ -76,7 +76,7 @@ const articleSchema = post
   ogImage={post?.image ?? undefined}
   articlePublishedTime={dateISO || undefined}
 >
-  <!-- Fix #3/#4: Schema.org BlogPosting + BreadcrumbList -->
+
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   {articleSchema && (
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
@@ -97,7 +97,7 @@ const articleSchema = post
         </a>
       </section>
     ) : post ? (
-      <article class="py-12" aria-label={post.title}>
+      <article class="py-8" aria-label={post.title}>
 
         <!-- Breadcrumbs ──────────────────────────────────────────────── -->
         <nav
@@ -148,7 +148,9 @@ const articleSchema = post
           >
             {dateDisplay}
           </time>
-          
+          <h1 class="text-3xl md:text-5xl font-bebas-neue text-white-700 tracking-wide leading-tight">
+             {post.title}
+          </h1>
         </header>
 
         <!-- ── Article body ───────────────────────────────────────────── -->
@@ -285,7 +287,7 @@ const articleSchema = post
     max-width: 100%;
     height: auto;
     border-radius: 4px;
-    margin: 1.5rem auto;
+    margin: 0.5rem auto;
     display: block;
     border: 0.2px solid #374151;
   }
@@ -302,7 +304,6 @@ const articleSchema = post
     font-style: italic;
   }
 
-  /* Hide Medium's boilerplate disclaimer paragraphs */
   .article-body :global(p:empty) {
     display: none;
   }

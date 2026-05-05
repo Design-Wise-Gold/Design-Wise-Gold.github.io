@@ -45,6 +45,7 @@ const stripHtml = (html: string): string =>
  */
 export const sanitizeHtml = (html: string): string =>
   html
+    .replace(/<h1[\s\S]*?<\/h1>/gi, '')
     .replace(/<script[\s\S]*?<\/script>/gi, '')
     .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
     .replace(/<embed[^>]*>/gi, '')

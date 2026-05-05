@@ -57,8 +57,25 @@ const itemList = {
 
   <main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
 
+    <!-- Breadcrumbs -->
+    <nav aria-label="Breadcrumb" class="px-4 md:px-12 pt-16 lg:pt-16">
+      <ol class="flex flex-wrap items-center gap-2 text-xs text-gray-400" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="/" class="hover:text-accent transition-colors" itemprop="item">
+            <span itemprop="name">Home</span>
+          </a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <li class="text-gray-600" aria-hidden="true">/</li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+          <span class="text-gray-300" itemprop="name">Blog</span>
+          <meta itemprop="position" content="2" />
+        </li>
+      </ol>
+    </nav>
+
     <!-- Header -->
-    <section class="flex flex-col justify-center items-center text-center px-4 md:px-12 pb-4 lg:pb-16 pt-16 lg:pt-32 border-b-[0.2px] border-gray-500">
+    <section class="flex flex-col justify-center items-center text-center px-4 md:px-12 pb-4 lg:pb-16 pt-8 lg:pt-16 border-b-[0.2px] border-gray-500">
       <h1 class="text-4xl md:text-5xl lg:text-6xl font-bebas-neue text-gray-100 tracking mb-6">
         WiseGold Blog
       </h1>
