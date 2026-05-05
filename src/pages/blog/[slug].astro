@@ -1,0 +1,318 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/navbar.astro';
+import Footer from '../../components/Footer.astro';
+import { fetchPostBySlug } from '../../lib/blog';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+// ── Fetch the single post ────────────────────────────────────────────────────
+let post = null;
+let fetchError = false;
+
+try {
+  if (slug) post = await fetchPostBySlug(slug);
+} catch {
+  fetchError = true;
+}
+
+// Redirect 404 if not found
+if (!post && !fetchError) {
+  return Astro.redirect('/blog/', 302);
+}
+
+// ── Derived values ────────────────────────────────────────────────────────────
+const dateISO     = post?.date ? new Date(post.date).toISOString() : '';
+const dateDisplay = post?.date
+  ? new Date(post.date).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'long', day: 'numeric',
+    })
+  : '';
+
+const canonicalUrl = `https://wise.gold/blog/${slug}/`;
+
+// ── Schema.org: BreadcrumbList + BlogPosting ──────────────────────────────────
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home',  item: 'https://wise.gold/' },
+    { '@type': 'ListItem', position: 2, name: 'Blog',  item: 'https://wise.gold/blog/' },
+    { '@type': 'ListItem', position: 3, name: post?.title ?? 'Article', item: canonicalUrl },
+  ],
+};
+
+const articleSchema = post
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt.substring(0, 200),
+      image: post.image ?? undefined,
+      datePublished: dateISO,
+      author: {
+        '@type': 'Organization',
+        name: 'WiseGold Capital',
+        url: 'https://wise.gold',
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'WiseGold Capital',
+        logo: { '@type': 'ImageObject', url: 'https://wise.gold/favicon/favicon.svg' },
+      },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+      url: canonicalUrl,
+    }
+  : null;
+---
+
+<Layout
+  title={post ? `${post.title} | WiseGold Weekly Pulse` : 'Article | WiseGold Blog'}
+  description={post ? post.excerpt.substring(0, 155) : 'WiseGold Capital gold market insights.'}
+  canonical={canonicalUrl}
+  ogType="article"
+  ogImage={post?.image ?? undefined}
+  articlePublishedTime={dateISO || undefined}
+>
+  <!-- Fix #3/#4: Schema.org BlogPosting + BreadcrumbList -->
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  {articleSchema && (
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  )}
+
+  <Navbar />
+
+  <main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
+
+    {fetchError ? (
+      <!-- Error state -->
+      <section class="flex flex-col items-center justify-center py-40 px-4 text-center">
+        <p class="text-gray-400 text-lg mb-6" role="alert">
+          Unable to load this article right now. Please try again shortly.
+        </p>
+        <a href="/blog/" class="text-accent border border-accent px-6 py-3 hover:bg-accent hover:text-black transition">
+          ← Back to Blog
+        </a>
+      </section>
+    ) : post ? (
+      <article class="py-12" aria-label={post.title}>
+
+        <!-- ── Breadcrumbs ──────────────────────────────────────────────── -->
+        <nav
+          aria-label="Breadcrumb"
+          class="px-4 md:px-12 py-5 "
+        >
+          <ol class="flex flex-wrap items-center gap-2 text-xs text-gray-400" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a
+                href="/"
+                class="hover:text-accent transition-colors"
+                itemprop="item"
+              >
+                <span itemprop="name">Home</span>
+              </a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <li class="text-gray-600" aria-hidden="true">/</li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a
+                href="/blog/"
+                class="hover:text-accent transition-colors"
+                itemprop="item"
+              >
+                <span itemprop="name">Blog</span>
+              </a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <li class="text-gray-600" aria-hidden="true">/</li>
+            <li
+              class="text-gray-300 truncate max-w-[200px] md:max-w-[400px]"
+              itemprop="itemListElement"
+              itemscope
+              itemtype="https://schema.org/ListItem"
+              aria-current="page"
+            >
+              <span itemprop="name">{post.title}</span>
+              <meta itemprop="position" content="3" />
+            </li>
+          </ol>
+        </nav>
+
+        <!-- ── Article header ─────────────────────────────────────────── -->
+        <header class="px-4 md:px-4 lg:px-24 py-4 max-w-4xl mx-auto w-full">
+          <time
+            datetime={dateISO}
+            class="text-accent text-xs uppercase tracking-widest mb-4 block"
+          >
+            {dateDisplay}
+          </time>
+          
+        </header>
+
+        <!-- ── Article body ───────────────────────────────────────────── -->
+        <div
+          class="article-body px-4 md:px-12 lg:px-24 py-4 max-w-4xl mx-auto w-full"
+          set:html={post.content}
+        />
+
+        <!-- ── Bottom nav ─────────────────────────────────────────────── -->
+        <div class="flex justify-between items-center px-4 md:px-12 lg:px-24 py-10 border-t-[0.2px] border-gray-800">
+          <a
+            href="/blog/"
+            class="text-gray-300 text-sm hover:text-accent transition-colors flex items-center gap-2"
+            aria-label="Return to blog listing"
+          >
+            <span aria-hidden="true">←</span> Back to Blog
+          </a>
+          <a
+            href={post.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-200 border border-gray-600 px-5 py-2.5 text-sm hover:text-accent hover:border-accent transition"
+            aria-label={`Read ${post.title} on Medium`}
+          >
+            Read on Medium ↗
+          </a>
+        </div>
+
+      </article>
+    ) : null}
+
+  </main>
+
+  <Footer class="border-t-[0.2px] border-gray-500" />
+</Layout>
+
+<style>
+  /* ── Article body typography ─────────────────────────────────────────────── */
+  .article-body {
+    color: #d1d5db; /* gray-300 */
+    line-height: 1.85;
+    font-size: 1rem;
+  }
+
+  .article-body :global(h1),
+  .article-body :global(h2),
+  .article-body :global(h3),
+  .article-body :global(h4) {
+    color: #f3f4f6; /* gray-100 */
+    font-weight: 600;
+    line-height: 1.3;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .article-body :global(h1) { font-size: 2rem; }
+  .article-body :global(h2) { font-size: 1.5rem; }
+  .article-body :global(h3) { font-size: 1.25rem; }
+  .article-body :global(h4) { font-size: 1.1rem; }
+
+  .article-body :global(p) {
+    margin-bottom: 1.4rem;
+  }
+
+  .article-body :global(a) {
+    color: #d4a017; /* gold accent */
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-body :global(a:hover) {
+    color: #ffe066;
+  }
+
+  .article-body :global(strong),
+  .article-body :global(b) {
+    color: #f3f4f6;
+    font-weight: 600;
+  }
+
+  .article-body :global(em),
+  .article-body :global(i) {
+    font-style: italic;
+    color: #e5e7eb;
+  }
+
+  .article-body :global(blockquote) {
+    border-left: 3px solid #d4a017;
+    padding: 0.75rem 1.25rem;
+    margin: 2rem 0;
+    color: #9ca3af;
+    font-style: italic;
+    background: rgba(212, 160, 23, 0.06);
+  }
+
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin: 1.25rem 0 1.25rem 1.5rem;
+  }
+
+  .article-body :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .article-body :global(ul li) {
+    list-style-type: disc;
+  }
+
+  .article-body :global(ol li) {
+    list-style-type: decimal;
+  }
+
+  .article-body :global(hr) {
+    border: none;
+    border-top: 1px solid #374151;
+    margin: 2.5rem 0;
+  }
+
+  .article-body :global(code) {
+    background: #1f2937;
+    color: #fbbf24;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.875em;
+    font-family: monospace;
+  }
+
+  .article-body :global(pre) {
+    background: #111827;
+    padding: 1.25rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .article-body :global(pre code) {
+    background: transparent;
+    padding: 0;
+  }
+
+  .article-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 1.5rem auto;
+    display: block;
+    border: 0.2px solid #374151;
+  }
+
+  .article-body :global(figure) {
+    margin: 2rem 0;
+    text-align: center;
+  }
+
+  .article-body :global(figcaption) {
+    color: #6b7280;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  /* Hide Medium's boilerplate disclaimer paragraphs */
+  .article-body :global(p:empty) {
+    display: none;
+  }
+</style>

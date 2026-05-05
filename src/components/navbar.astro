@@ -302,11 +302,29 @@ import PortalModal from "./molecules/PortalModal.astro";
     // INTRO CINEMATIC — Splash logo → navbar → hero
     // ─────────────────────────────────────────────
     function playIntro() {
+        const isHomePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
         const splash = document.querySelector("#logo-splash");
-        const splashSvg = document.querySelector("#logo-splash-svg");
-        const splashLetters = document.querySelectorAll(".splash-letter");
         const logoTop = document.querySelector("#logo__top");
         const logoLink = document.querySelector("#logo-link");
+
+        if (!isHomePage) {
+            // Ocultar el splash inmediatamente si no estamos en la página de inicio
+            if (splash) (splash as HTMLElement).style.display = "none";
+            
+            // Mantener los eventos de hover del logo
+            if (logoLink && logoTop) {
+                logoLink.addEventListener("mouseenter", () =>
+                    gsap.to(logoTop, { duration: 0.3, ease: "power2.out" }),
+                );
+                logoLink.addEventListener("mouseleave", () =>
+                    gsap.to(logoTop, { duration: 0.3, ease: "power2.out" }),
+                );
+            }
+            return; // Detener la animación aquí
+        }
+
+        const splashSvg = document.querySelector("#logo-splash-svg");
+        const splashLetters = document.querySelectorAll(".splash-letter");
 
         // Estado inicial oculto de todos los actores
         gsap.set("#navbar", { y: -60, opacity: 0 });

@@ -390,6 +390,15 @@ const twitterHandle = "@wisegoldcapital";
       draw();
     });
 
+    // Fix #16: Pause animation when tab is hidden to save CPU
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else {
+        draw();
+      }
+    });
+
     resize();
     draw();
   })();

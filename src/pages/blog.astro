@@ -2,75 +2,151 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/navbar.astro';
 import Footer from '../components/Footer.astro';
+import { fetchPosts } from '../lib/blog';
+import type { Post } from '../lib/blog';
 
-// Fetch the LinkedIn posts
-const response = await fetch('https://raw.githubusercontent.com/development11tr/wisegold-scraper/main/WiseGoldLinkedInPosts.json');
-const posts = await response.json();
+export const prerender = false;
+
+// ── Fetch posts directly from shared lib (eliminates double HTTP round-trip) ──
+let posts: Post[] = [];
+let fetchError = false;
+
+try {
+  posts = await fetchPosts();
+} catch (err) {
+  fetchError = true;
+  console.error('[blog.astro] Could not load posts:', err);
+}
+
+// ── Build Schema.org ItemList for rich results ────────────────────────────────
+const itemList = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'WiseGold Weekly Pulse — Blog',
+  description: 'Weekly insights on gold markets, institutional asset allocation, and macro finance.',
+  url: 'https://wise.gold/blog/',
+  itemListElement: posts.map((post, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: post.title,
+    url: `https://wise.gold${post.internalUrl}`,
+  })),
+};
 ---
 
 <Layout
   title="WiseGold Blog — Weekly Pulse | Gold Market Insights"
   description="Follow WiseGold's weekly insights on gold markets, institutional asset allocation, and the structural themes rewriting the rules of modern finance."
   canonical="https://wise.gold/blog/"
-  ogType="article"
+  ogType="website"
 >
-    <Navbar />
-    
-	<main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
-        
-        <!-- Header Section occupying ~50% height -->
-        <section class=" flex flex-col justify-center items-center text-center px-4 md:px-12 py-32 border-b-[0.2px] border-gray-500">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bebas-neue text-gray-100 tracking mb-6">
-                WiseGold Blog 
-            </h1>
-            <span class="text-accent text-2xl">Weekly Pulse</span>
-            <p class="text-lg md:text-base text-gray-300 max-w-4xl font-light leading-relaxed">
-                Insights, market intelligence, and structural themes rewriting the rules of asset allocation. Follow our latest updates from LinkedIn.
-            </p>
-        </section>
+  <!-- Fix #3: Schema.org ItemList for blog rich results -->
+  <script type="application/ld+json" set:html={JSON.stringify(itemList)} />
 
-        <!-- Blog Posts List -->
-        <section class="py-20 px-4 md:px-12 flex flex-col gap-16">
-            {posts.map((post: any) => (
-                <article class="flex flex-col lg:flex-row gap-8 lg:gap-12 group">
-                    <div class="flex justify-start overflow-hidden h-fit items-start w-1/2 lg:w-1/6 border-[0.2px] border-gray-500">
-                        <a href={post.url} target="_blank" rel="noopener noreferrer" class="block "> 
-                            <img 
-                                src={post.image.replaceAll('&amp;', '&')} 
-                                alt={post.title} 
-                                class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                            />
-                        </a>
-                    </div>
-                    <div class="w-full  flex flex-col justify-center py-4 lg:py-0">
-                        <span class="text-accent font-mono text-xs md:text-sm tracking-widest mb-4  uppercase flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                            {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-                        </span>
-                        <a href={post.url} target="_blank" rel="noopener noreferrer">
-                            <h2 class="text-3xl md:text-3xl font-bebas-neue text-gray-200 tracking-wide mb-6 group-hover:text-accent transition-colors duration-300 leading-tight">
-                                {post.title}
-                            </h2>
-                        </a>
-                        <p class="text-gray-300 leading-relaxed font-light mb-8 text-base  whitespace-pre-line">
-                            {post.text.length > 300 ? post.text.substring(0, 700) + "..." : post.text}
-                        </p>
-                        <a 
-                            href={post.url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            class="inline-flex items-center gap-3 text-gray-200 border-[0.2px] border-gray-500 px-8 py-4 w-fit hover:border-accent hover:text-accent transition-all duration-300 text-sm font-medium group-hover:bg-gray-900"
-                        >
-                            Read Full Post on LinkedIn
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                        </a>
-                    </div>
-                </article>
-            ))}
-        </section>
+  <Navbar />
 
-    </main>
-    <Footer
-        class="border-t-[0.2px] border-gray-500 "
-     />
+  <main class="block mx-3 lg:mx-[143px] border-solid border-gray-500 border-l-[0.2px] border-r-[0.2px]">
+
+    <!-- Header -->
+    <section class="flex flex-col justify-center items-center text-center px-4 md:px-12 pb-4 lg:pb-16 pt-16 lg:pt-32 border-b-[0.2px] border-gray-500">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bebas-neue text-gray-100 tracking mb-6">
+        WiseGold Blog
+      </h1>
+      <!-- Fix #10 (semántica): span → p para jerarquía de headings correcta -->
+      <p class="text-accent text-2xl mb-3">Weekly Pulse</p>
+      <p class="text-base text-gray-300 max-w-4xl font-light leading-relaxed">
+        Insights, market intelligence, and structural themes rewriting the rules of asset allocation.
+      </p>
+    </section>
+
+    <!-- Posts -->
+    <section class="py-16 px-4 md:px-12 flex flex-col gap-8" aria-label="Blog articles">
+
+      {/* Fix #11: Manejo diferenciado de error vs. sin posts */}
+      {fetchError && (
+        <p class="text-gray-400 text-center py-20" role="alert">
+          Unable to load articles right now. Please try again in a few minutes.
+        </p>
+      )}
+
+      {!fetchError && posts.length === 0 && (
+        <p class="text-gray-400 text-center py-20">
+          No articles available right now. Check back soon.
+        </p>
+      )}
+
+      {posts.map((post, index) => {
+        // Fix #4: La primera fecha se usa como articlePublishedTime si hubiera un solo artículo destacado
+        const dateISO = post.date ? new Date(post.date).toISOString() : '';
+        const dateDisplay = post.date
+          ? new Date(post.date).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })
+          : '';
+
+        return (
+          /* Fix #12: aria-label en article para screen readers */
+          <article
+            class="flex flex-col gap-4 lg:gap-12 group border-b-[0.2px] border-gray-800 pb-8"
+            aria-label={post.title}
+          >
+            <!-- Fix #7 + #8: imagen con width/height explícitos; primera imagen con fetchpriority -->
+            <div class="flex justify-start overflow-hidden h-fit items-start w-1/2 lg:w-1/6 border-[0.2px] border-gray-500">
+              <!-- Fix #9: enlace interno /blog/[slug] en lugar de Medium directamente -->
+              <a href={post.internalUrl} class="block w-full h-full">
+                <img
+                  src={post.image ?? '/images/fallback.jpg'}
+                  alt={post.title}
+                  width="320"
+                  height="180"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchpriority={index === 0 ? 'high' : 'auto'}
+                  decoding="async"
+                  class="w-full h-auto max-h-[150px] object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </a>
+            </div>
+
+            <!-- Contenido -->
+            <div class="w-full flex flex-col justify-center gap-2 min-w-0">
+
+              <!-- Fix #15: <time> element para fechas semánticas -->
+              <time
+                datetime={dateISO}
+                class="text-accent text-xs uppercase"
+              >
+                {dateDisplay}
+              </time>
+
+              <a href={post.internalUrl}>
+                <h2 class="text-lg md:text-3xl text-gray-200 leading-snug hover:text-accent transition-colors duration-300 font-semibold">
+                  {post.title}
+                </h2>
+              </a>
+
+              <p class="text-gray-300 leading-relaxed text-sm md:text-base">
+                {post.excerpt}
+              </p>
+
+              <!-- Fix #12: aria-label descriptivo en botón "Read Full Article" -->
+              <a
+                href={post.internalUrl}
+                aria-label={`Read full article: ${post.title}`}
+                class="text-gray-200 mt-4 border px-2 py-2 w-fit hover:text-accent hover:border-accent transition text-sm md:text-base"
+              >
+                Read Full Article
+              </a>
+            </div>
+
+          </article>
+        );
+      })}
+
+    </section>
+
+  </main>
+
+  <Footer class="border-t-[0.2px] border-gray-500" />
 </Layout>
