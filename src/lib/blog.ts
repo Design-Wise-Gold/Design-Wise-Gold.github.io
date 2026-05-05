@@ -64,7 +64,7 @@ const META_PATTERNS =
  * Build a multi-paragraph excerpt up to `maxLen` characters.
  * Skips boilerplate paragraphs to guarantee meaningful content.
  */
-const getExcerpt = (html: string, maxLen = 1100): string => {
+const getExcerpt = (html: string, maxLen = 400): string => {
   const matches = [...html.matchAll(/<p>(.*?)<\/p>/gs)];
   const paragraphs: string[] = [];
   let total = 0;

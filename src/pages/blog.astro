@@ -18,6 +18,16 @@ try {
   console.error('[blog.astro] Could not load posts:', err);
 }
 
+// ── Pagination logic ────────────────────────────────────────────────────────
+const POSTS_PER_PAGE = 7;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
+const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+
+const paginatedPosts = posts.slice(
+  (currentPage - 1) * POSTS_PER_PAGE,
+  currentPage * POSTS_PER_PAGE
+);
+
 // ── Build Schema.org ItemList for rich results ────────────────────────────────
 const itemList = {
   '@context': 'https://schema.org',
@@ -60,7 +70,7 @@ const itemList = {
     </section>
 
     <!-- Posts -->
-    <section class="py-16 px-4 md:px-12 flex flex-col gap-8" aria-label="Blog articles">
+    <section class="py-16 px-4 lg:px-16 md:px-12 flex flex-col gap-8" aria-label="Blog articles">
 
       {/* Fix #11: Manejo diferenciado de error vs. sin posts */}
       {fetchError && (
@@ -75,7 +85,7 @@ const itemList = {
         </p>
       )}
 
-      {posts.map((post, index) => {
+      {paginatedPosts.map((post, index) => {
         // Fix #4: La primera fecha se usa como articlePublishedTime si hubiera un solo artículo destacado
         const dateISO = post.date ? new Date(post.date).toISOString() : '';
         const dateDisplay = post.date
@@ -87,14 +97,12 @@ const itemList = {
           : '';
 
         return (
-          /* Fix #12: aria-label en article para screen readers */
+         
           <article
-            class="flex flex-col gap-4 lg:gap-12 group border-b-[0.2px] border-gray-800 pb-8"
+            class="flex flex-col lg:flex-row gap-4 lg:gap-12 group pb-8"
             aria-label={post.title}
           >
-            <!-- Fix #7 + #8: imagen con width/height explícitos; primera imagen con fetchpriority -->
             <div class="flex justify-start overflow-hidden h-fit items-start w-1/2 lg:w-1/6 border-[0.2px] border-gray-500">
-              <!-- Fix #9: enlace interno /blog/[slug] en lugar de Medium directamente -->
               <a href={post.internalUrl} class="block w-full h-full">
                 <img
                   src={post.image ?? '/images/fallback.jpg'}
@@ -115,18 +123,18 @@ const itemList = {
               <!-- Fix #15: <time> element para fechas semánticas -->
               <time
                 datetime={dateISO}
-                class="text-accent text-xs uppercase"
+                class="text-gray-400 text-xs uppercase"
               >
                 {dateDisplay}
               </time>
 
               <a href={post.internalUrl}>
-                <h2 class="text-lg md:text-3xl text-gray-200 leading-snug hover:text-accent transition-colors duration-300 font-semibold">
+                <h2 class="text-lg md:text-3xl text-[#ffffffc5] leading-snug hover:text-white transition-colors duration-300 font-semibold">
                   {post.title}
                 </h2>
               </a>
 
-              <p class="text-gray-300 leading-relaxed text-sm md:text-base">
+              <p class="text-gray-400 leading-relaxed text-sm md:text-base">
                 {post.excerpt}
               </p>
 
@@ -134,15 +142,65 @@ const itemList = {
               <a
                 href={post.internalUrl}
                 aria-label={`Read full article: ${post.title}`}
-                class="text-gray-200 mt-4 border px-2 py-2 w-fit hover:text-accent hover:border-accent transition text-sm md:text-base"
+                class="text-gray-300 flex justify-center items-center gap-2 mt-4 py-2 w-fit group-hover:text-white transition text-sm md:text-base"
               >
-                Read Full Article
+                Read Full Article<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z"/></svg>
               </a>
             </div>
 
           </article>
         );
       })}
+
+      <!-- Pagination Controls -->
+      {!fetchError && totalPages > 1 && (
+        <nav class="flex justify-center items-center gap-4 mt-12 mb-8" aria-label="Pagination">
+          {currentPage > 1 ? (
+            <a
+              href={`/blog/?page=${currentPage - 1}`}
+              class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="m313-440 224 224-57 57-320-320 320-320 57 57-224 224h487v80H313Z"/></svg>
+              Previous
+            </a>
+          ) : (
+            <span class="text-black-900 flex items-center gap-2 cursor-not-allowed">
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="m313-440 224 224-57 57-320-320 320-320 57 57-224 224h487v80H313Z"/></svg>
+              Previous
+            </span>
+          )}
+
+          <div class="flex gap-2">
+            {[...Array(totalPages)].map((_, i) => (
+              <a
+                href={`/blog/?page=${i + 1}`}
+                class={`w-8 h-8 flex items-center justify-center rounded-sm border-[0.2px] transition-colors ${
+                  currentPage === i + 1
+                    ? 'bg-accent text-black border-accent'
+                    : 'border-gray-500 text-gray-400 hover:border-white hover:text-white'
+                }`}
+              >
+                {i + 1}
+              </a>
+            ))}
+          </div>
+
+          {currentPage < totalPages ? (
+            <a
+              href={`/blog/?page=${currentPage + 1}`}
+              class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
+            >
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M647-440H160v-80h487L423-744l57-57 320 320-320 320-57-57 224-224Z"/></svg>
+            </a>
+          ) : (
+            <span class="text-black-900 flex items-center gap-2 cursor-not-allowed">
+              Next
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M647-440H160v-80h487L423-744l57-57 320 320-320 320-57-57 224-224Z"/></svg>
+            </span>
+          )}
+        </nav>
+      )}
 
     </section>
 
