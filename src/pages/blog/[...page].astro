@@ -1,32 +1,24 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/navbar.astro';
-import Footer from '../components/Footer.astro';
-import { fetchPosts } from '../lib/blog';
-import type { Post } from '../lib/blog';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/navbar.astro';
+import Footer from '../../components/Footer.astro';
+import type { Page, GetStaticPaths } from 'astro';
+import { fetchPosts } from '../../lib/blog';
+import type { Post } from '../../lib/blog';
 
-export const prerender = false;
+export const prerender = true;
 
-// ── Fetch posts directly from shared lib (eliminates double HTTP round-trip) ──
-let posts: Post[] = [];
-let fetchError = false;
+export const getStaticPaths: GetStaticPaths = async ({ paginate }) => {
+  const posts = await fetchPosts();
+  return paginate(posts, { pageSize: 7 });
+};
 
-try {
-  posts = await fetchPosts();
-} catch (err) {
-  fetchError = true;
-  console.error('[blog.astro] Could not load posts:', err);
+interface Props {
+  page: Page<Post>;
 }
 
-// ── Pagination logic ────────────────────────────────────────────────────────
-const POSTS_PER_PAGE = 7;
-const currentPage = parseInt(Astro.url.searchParams.get('page') || '1', 10);
-const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
-
-const paginatedPosts = posts.slice(
-  (currentPage - 1) * POSTS_PER_PAGE,
-  currentPage * POSTS_PER_PAGE
-);
+const { page } = Astro.props;
+const posts = page.data;
 
 // ── Build Schema.org ItemList for rich results ────────────────────────────────
 const itemList = {
@@ -35,7 +27,7 @@ const itemList = {
   name: 'WiseGold Weekly Pulse — Blog',
   description: 'Weekly insights on gold markets, institutional asset allocation, and macro finance.',
   url: 'https://wise.gold/blog/',
-  itemListElement: posts.map((post, i) => ({
+  itemListElement: posts.map((post: Post, i: number) => ({
     '@type': 'ListItem',
     position: i + 1,
     name: post.title,
@@ -50,7 +42,6 @@ const itemList = {
   canonical="https://wise.gold/blog/"
   ogType="website"
 >
-  <!-- Fix #3: Schema.org ItemList for blog rich results -->
   <script type="application/ld+json" set:html={JSON.stringify(itemList)} />
 
   <Navbar />
@@ -79,7 +70,6 @@ const itemList = {
       <h1 class="text-4xl md:text-5xl lg:text-6xl font-bebas-neue text-gray-100 tracking mb-6">
         WiseGold Blog
       </h1>
-      <!-- Fix #10 (semántica): span → p para jerarquía de headings correcta -->
       <p class="text-accent text-2xl mb-3">Weekly Pulse</p>
       <p class="text-base text-gray-300 max-w-4xl font-light leading-relaxed">
         Insights, market intelligence, and structural themes rewriting the rules of asset allocation.
@@ -89,21 +79,13 @@ const itemList = {
     <!-- Posts -->
     <section class="py-16 px-4 lg:px-16 md:px-12 flex flex-col gap-8" aria-label="Blog articles">
 
-      {/* Fix #11: Manejo diferenciado de error vs. sin posts */}
-      {fetchError && (
-        <p class="text-gray-400 text-center py-20" role="alert">
-          Unable to load articles right now. Please try again in a few minutes.
-        </p>
-      )}
-
-      {!fetchError && posts.length === 0 && (
+      {posts.length === 0 && (
         <p class="text-gray-400 text-center py-20">
           No articles available right now. Check back soon.
         </p>
       )}
 
-      {paginatedPosts.map((post, index) => {
-        // Fix #4: La primera fecha se usa como articlePublishedTime si hubiera un solo artículo destacado
+      {posts.map((post: Post, index: number) => {
         const dateISO = post.date ? new Date(post.date).toISOString() : '';
         const dateDisplay = post.date
           ? new Date(post.date).toLocaleDateString('en-US', {
@@ -114,7 +96,6 @@ const itemList = {
           : '';
 
         return (
-         
           <article
             class="flex flex-col lg:flex-row gap-4 lg:gap-12 group pb-8"
             aria-label={post.title}
@@ -127,8 +108,6 @@ const itemList = {
                   width="320"
                   height="180"
                   loading={index === 0 ? 'eager' : 'lazy'}
-                  fetchpriority={index === 0 ? 'high' : 'auto'}
-                  decoding="async"
                   class="w-full h-auto max-h-[150px] object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </a>
@@ -136,8 +115,6 @@ const itemList = {
 
             <!-- Contenido -->
             <div class="w-full flex flex-col justify-center gap-2 min-w-0">
-
-              <!-- Fix #15: <time> element para fechas semánticas -->
               <time
                 datetime={dateISO}
                 class="text-gray-400 text-xs uppercase"
@@ -155,7 +132,6 @@ const itemList = {
                 {post.excerpt}
               </p>
 
-              <!-- Fix #12: aria-label descriptivo en botón "Read Full Article" -->
               <a
                 href={post.internalUrl}
                 aria-label={`Read full article: ${post.title}`}
@@ -164,17 +140,16 @@ const itemList = {
                 Read Full Article<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z"/></svg>
               </a>
             </div>
-
           </article>
         );
       })}
 
       <!-- Pagination Controls -->
-      {!fetchError && totalPages > 1 && (
+      {page.lastPage > 1 && (
         <nav class="flex justify-center items-center gap-4 mt-12 mb-8" aria-label="Pagination">
-          {currentPage > 1 ? (
+          {page.url.prev ? (
             <a
-              href={`/blog/?page=${currentPage - 1}`}
+              href={page.url.prev}
               class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
             >
               <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="m313-440 224 224-57 57-320-320 320-320 57 57-224 224h487v80H313Z"/></svg>
@@ -188,23 +163,27 @@ const itemList = {
           )}
 
           <div class="flex gap-2">
-            {[...Array(totalPages)].map((_, i) => (
-              <a
-                href={`/blog/?page=${i + 1}`}
-                class={`w-8 h-8 flex items-center justify-center rounded-sm border-[0.2px] transition-colors ${
-                  currentPage === i + 1
-                    ? 'bg-accent text-black border-accent'
-                    : 'border-gray-500 text-gray-400 hover:border-white hover:text-white'
-                }`}
-              >
-                {i + 1}
-              </a>
-            ))}
+            {[...Array(page.lastPage)].map((_, i) => {
+              const pageNum = i + 1;
+              const url = pageNum === 1 ? '/blog' : `/blog/${pageNum}`;
+              return (
+                <a
+                  href={url}
+                  class={`w-8 h-8 flex items-center justify-center rounded-sm border-[0.2px] transition-colors ${
+                    page.currentPage === pageNum
+                      ? 'bg-accent text-black border-accent'
+                      : 'border-gray-500 text-gray-400 hover:border-white hover:text-white'
+                  }`}
+                >
+                  {pageNum}
+                </a>
+              );
+            })}
           </div>
 
-          {currentPage < totalPages ? (
+          {page.url.next ? (
             <a
-              href={`/blog/?page=${currentPage + 1}`}
+              href={page.url.next}
               class="text-gray-400 hover:text-white transition-colors flex items-center gap-2"
             >
               Next

@@ -1,6 +1,7 @@
+import type { APIRoute } from 'astro';
 import { fetchPosts } from '../lib/blog';
 
-export async function GET() {
+export const GET: APIRoute = async () => {
   const posts = await fetchPosts();
   const baseUrl = 'https://wise.gold';
   
